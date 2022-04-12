@@ -5,40 +5,53 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
-use App\Models\PersonneVulnerableTable;
+use App\Models\personneVulnerable;
 use App\Http\Resources\PersonneVulnerableResource;
-use Nette\Utils\Validators;
 
 class PersonneVulnerableController extends Controller
 {
     public function index()
     {
-        $data =PersonneVulnerableTable::latest()->get();
-        return response()->json([PersonneVulnerableResource::collection($data), 'Recuperé avec succès. ']);
+
+        $personneVulnerable=personneVulnerable::all();
+        return response()->json([
+            "success" => true,
+            "message" => "Lste des Personne vulnerable",
+            "data" => $personneVulnerable
+            ]);
+    }
+    public function show($id)
+    {
+       $personneVulnerable = personneVulnerable::find($id);
+        if (is_null($personneVulnerable)) {
+            return response()->json('Données non trouvé', 404);
+        }
+        return response()->json([new PersonneVulnerableResource($personneVulnerable)]);
     }
 
 
     public function store(Request $request)
     {
-        $validation=Validators::make($request->all(), [
-            'nom'=>'required|string|max:255',
-            'prenom'=>'required|string|max:255',
+        $input=$request->all();
+
+        $validation=Validator::make($input, [
+            'nom'=>'required',
+            'prenom'=>'required',
             'adresse'=>'required',
-            'tel'=>'required|string|max:10',
+            'telephone'=>'required',
             'age'=>'required'
         ]);
 
         if($validation->fails()){
-            return response()->json($validation->errors());
+            return $this->sendError('Erreur de Validation.', $validation->errors());
         }
 
-        $personneVulnerable= PersonneVulnerableTable::create([
-            'nom'=>$request->nom,
-            'prenom'=>$request->prenom,
-            'adresse'=>$request->adresse,
-            'tel'=>$request->tel,
-            'age'=>$request->age
-        ]);
-        return response()->json(['Perssone Ajouter avec succès.', new PersonneVulnerableResource($personneVulnerable)]);
+        $personneVulnerable= personneVulnerable::create($input);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Personne Creer avec succès.",
+            "data" => $personneVulnerable
+            ]);
     }
 }

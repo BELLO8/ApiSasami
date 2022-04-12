@@ -15,12 +15,11 @@ class PersonneVulnerableResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
             'nom'=>$this->nom,
             'prenom'=>$this->prenom,
             'adresse'=>$this->adrersse,
-            'tel'=>$this->tel,
-            'age'=>$this->age,
+            'telephone'=>$this->telephone,
+            'age'=>$this->age
         ];
     }
 }

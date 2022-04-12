@@ -13,8 +13,12 @@ use App\Http\Controllers\API\PersonneVulnerableController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::resource('personne',PersonneVulnerableController::class);
+Route::group([
+    'prefix' => 'v1'
+  ], function () {
+       Route::resource('personne',PersonneVulnerableController::class);
+    }
+);
 
 
 
