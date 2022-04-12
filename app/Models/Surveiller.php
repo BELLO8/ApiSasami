@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Created by Reliese Model.
+ * Created by Reliese Model
  */
 
 namespace App\Models;
@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Surveiller
- * 
+ *
  * @property int $id
  * @property int|null $personne_vulnerable
  * @property int|null $personne_Affilee
- * 
+ *
  * @property PersonneAffilee|null $personne_affilee
  *
  * @package App\Models
