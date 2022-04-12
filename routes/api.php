@@ -14,6 +14,7 @@ use App\Http\Controllers\DispositifController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::apiResource('/Dispositifs',DispositifController::class);
 
 Route::apiResource('dispositif', DispositifController::class);
 
