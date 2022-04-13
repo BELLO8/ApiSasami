@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DispositifController;
-
+use App\Http\Controllers\AssignationController;
+use App\Http\Controllers\PersonneVulnerableController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,6 +16,10 @@ use App\Http\Controllers\DispositifController;
 |
 */
 Route::apiResource('/Dispositifs',DispositifController::class);
+Route::apiResource('/Assignations',AssignationController::class);
+
+Route::apiResource('/PersoonnesVulnerales',PersonneVulnerableController::class);
+Route::apiResource('/PersoonnesAffilee',PersonneAffileeController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

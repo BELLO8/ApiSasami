@@ -22,7 +22,7 @@ class DispositifResource extends JsonResource
             'Reference'=>$this->ref,
             'fiche Technique'=>$this->fiche,
             'Numero'=>$this->numero,
-            'Date'=>$this->date
+            'Date'=>$this->date,
         ];
     }
 }
