@@ -12,15 +12,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Assigner
- * 
+ *
  * @property int $id
  * @property int|null $frequenceD
  * @property Carbon|null $dates
  * @property int|null $id_personneV
  * @property int|null $id_dispositif
- * 
+ *
  * @property Dispositif|null $dispositif
- * @property PersonneVulnerable|null $personne_vulnerable
+ * @property profile|null $personne_vulnerable
  * @property Collection|Constante[] $constantes
  * @property Collection|Profiling[] $profilings
  *
@@ -55,7 +55,7 @@ class Assigner extends Model
 
 	public function personne_vulnerable()
 	{
-		return $this->belongsTo(PersonneVulnerable::class, 'id_personneV');
+		return $this->belongsTo(profile::class, 'id_personneV');
 	}
 
 	public function constantes()

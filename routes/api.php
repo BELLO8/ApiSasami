@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PersonneVulnerableController;
+use App\Http\Controllers\API\ProfillingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +18,7 @@ Route::group([
     'prefix' => 'v1'
   ], function () {
        Route::resource('personne',PersonneVulnerableController::class);
+       Route::resource('profilling',ProfillingController::class);
     }
 );
 

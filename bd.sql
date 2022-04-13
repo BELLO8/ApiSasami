@@ -113,7 +113,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2022_04_11_144156_create_dispositif_table', 0),
 (5, '2022_04_11_144156_create_incident_table', 0),
 (6, '2022_04_11_144156_create_personneAffilee_table', 0),
-(7, '2022_04_11_144156_create_personneVulnerable_table', 0),
+(7, '2022_04_11_144156_create_profile_table', 0),
 (8, '2022_04_11_144156_create_profiling_table', 0),
 (9, '2022_04_11_144156_create_serviceUrgence_table', 0),
 (10, '2022_04_11_144156_create_surveiller_table', 0),
@@ -144,10 +144,10 @@ CREATE TABLE `personneAffilee` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `personneVulnerable`
+-- Structure de la table `profile`
 --
 
-CREATE TABLE `personneVulnerable` (
+CREATE TABLE `profile` (
   `id` int(11) NOT NULL,
   `nom` varchar(255) DEFAULT NULL,
   `prenom` varchar(255) DEFAULT NULL,
@@ -265,9 +265,9 @@ ALTER TABLE `personneAffilee`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `personneVulnerable`
+-- Index pour la table `profile`
 --
-ALTER TABLE `personneVulnerable`
+ALTER TABLE `profile`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -345,9 +345,9 @@ ALTER TABLE `personneAffilee`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `personneVulnerable`
+-- AUTO_INCREMENT pour la table `profile`
 --
-ALTER TABLE `personneVulnerable`
+ALTER TABLE `profile`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -389,7 +389,7 @@ ALTER TABLE `alerte`
 --
 ALTER TABLE `assigner`
   ADD CONSTRAINT `FK_dispositif` FOREIGN KEY (`id_dispositif`) REFERENCES `dispositif` (`id`),
-  ADD CONSTRAINT `FK_personneV` FOREIGN KEY (`id_personneV`) REFERENCES `personneVulnerable` (`id`);
+  ADD CONSTRAINT `FK_personneV` FOREIGN KEY (`id_personneV`) REFERENCES `profile` (`id`);
 
 --
 -- Contraintes pour la table `constante`
@@ -420,7 +420,7 @@ ALTER TABLE `serviceUrgence`
 --
 ALTER TABLE `surveiller`
   ADD CONSTRAINT `fk_personne_Affilee` FOREIGN KEY (`personne_Affilee`) REFERENCES `personneAffilee` (`id`),
-  ADD CONSTRAINT `fk_personne_vulnerable` FOREIGN KEY (`personne_vulnerable`) REFERENCES `personneVulnerable` (`id`);
+  ADD CONSTRAINT `fk_personne_vulnerable` FOREIGN KEY (`personne_vulnerable`) REFERENCES `profile` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
