@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DispositifController;
 use App\Http\Controllers\AssignationController;
 use App\Http\Controllers\PersonneVulnerableController;
+use App\Http\Controllers\PersonneAffileeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

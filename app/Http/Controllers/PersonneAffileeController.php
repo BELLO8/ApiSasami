@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PersonneAffilee;
 
 
-class PersonneVulnerableController extends Controller
+class PersonneAffileeController extends Controller
 {
     /**
      * Display a listing of the resource.
