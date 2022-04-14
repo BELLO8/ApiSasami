@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use App\Models\Profiling;
+use App\Models\Assigner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProfillingController extends Controller
 {
@@ -15,10 +17,10 @@ class ProfillingController extends Controller
     public function index()
     {
 
-        $profile=profilling::all();
+        $profile=profiling::all();
         return response()->json([
             "success" => true,
-            "message" => "Lste des Personne vulnerable",
+            "message" => "Lste des des constantes moyennes",
             "data" => $profile
             ]);
     }
@@ -37,21 +39,21 @@ class ProfillingController extends Controller
         $validation=Validator::make($input, [
             'temperatureM'=>'required',
             'nombre_pasM'=>'required',
-            'frequence-resM'=>'required',
+            'frequence_resM'=>'required',
             'rythme_cardM'=>'required',
             'dates'=>'required',
-            'id_assigner'=>'required',
+            'id_assigner'=>'required'
         ]);
 
-        if($validation->fails()){
-            return $this->sendError('Erreur de Validation.', $validation->errors());
-        }
+        // if($validation->fails()){
+        //     return $this->sendError('Erreur de Validation.', $validation->errors());
+        // }
 
-        $profile= profile::create($input);
+        $profile= profiling::create($input);
 
         return response()->json([
             "success" => true,
-            "message" => "Personne Creer avec succès.",
+            "message" => "Donné moyenne  Creer avec succès.",
             "data" => $profile
             ]);
     }
@@ -79,37 +81,38 @@ class ProfillingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, profile $profile)
+    public function update(Request $request, $id)
     {
+        $profiles=Profiling::find($id);
 
-        $validation = Validator::make($request->all(),[
-            'temperatureM'=>'required',
-            'nombre_pasM'=>'required',
-            'frequence-resM'=>'required',
-            'rythme_cardM'=>'required',
-            'dates'=>'required',
-            'id_assigner'=>'required',
-        ]);
+        // $validation = Validator::make($profiles->$request->all(),[
+        //     'temperatureM'=>'required',
+        //     'nombre_pasM'=>'required',
+        //     'frequence_resM'=>'required',
+        //     'rythme_cardM'=>'required',
+        //     'dates'=>'required',
+        //     'id_assigner'=>'required'
+        // ]);
 
-        if($validator->fails()){
-            return $this->sendError('Erreur de Validation.', $validation->errors());
-        }
+        // if($validation->fails()){
+        //     return $this->sendError('Erreur de Validation.', $validation->errors());
+        // }
+        $profiles->update($request->all());
+        // $profiles->temperatureM= $request->temperatureM;
+        // $profiles->nombre_pasM = $request->nombre_pasM;
+        // $profiles->frequence_resM = $request->frequence_resM;
+        // $profiles->rythme_cardM = $request->rythme_cardM;
+        // $profiles->dates = $request->dates;
+        // $profiles->id_assigner = $request->id_assigner;
+         $profiles->save();
 
-        $profile->temperatureM= $request->temperatureM;
-        $profile->nombre_pasM = $request->nombre_pasM;
-        $profile->frequence_resM = $request->frequence_resM;
-        $profile->rythme_cardM = $request->rythme_cardM;
-        $profile->dates = $request->dates;
-        $profile->id_assigner = $request->id_assigner;
-        $profile->save();
-
-        return response()->json(['Mise a jours effectué avec succès.', new profileResource($profile)]);
+        return response()->json(['Mise a jours effectué avec succès.', new profillingResource($profiles)]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $profile
      * @return \Illuminate\Http\Response
      */
     public function destroy(profile $profile)
