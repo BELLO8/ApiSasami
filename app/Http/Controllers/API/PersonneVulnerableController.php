@@ -16,7 +16,7 @@ class PersonneVulnerableController extends Controller
         $personneVulnerable=personneVulnerable::all();
         return response()->json([
             "success" => true,
-            "message" => "Lste des Personne vulnerable",
+            "message" => "Liste des Personnes vulnerables",
             "data" => $personneVulnerable
             ]);
     }
@@ -34,17 +34,17 @@ class PersonneVulnerableController extends Controller
     {
         $input=$request->all();
 
-        $validation=Validator::make($input, [
-            'nom'=>'required',
-            'prenom'=>'required',
-            'adresse'=>'required',
-            'telephone'=>'required',
-            'age'=>'required'
-        ]);
+        // $validation=Validator::make($input, [
+        //     'nom'=>'required',
+        //     'prenom'=>'required',
+        //     'adresse'=>'required',
+        //     'telephone'=>'required',
+        //     'age'=>'required'
+        // ]);
 
-        if($validation->fails()){
-            return $this->sendError('Erreur de Validation.', $validation->errors());
-        }
+        // if($validation->fails()){
+        //     return $this->sendError('Erreur de Validation.', $validation->errors());
+        // }
 
         $personneVulnerable= personneVulnerable::create($input);
 

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 use App\Models\Profiling;
 use App\Models\Assigner;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfillingResource;
 use Illuminate\Http\Request;
-use Validator;
+use App\Http\Requests\ProfillingRequest;
+
 
 class ProfillingController extends Controller
 {
@@ -17,7 +19,7 @@ class ProfillingController extends Controller
     public function index()
     {
 
-        $profile=profiling::all();
+        $profile = profiling::with("assigner")->get();
         return response()->json([
             "success" => true,
             "message" => "Lste des des constantes moyennes",
@@ -32,25 +34,10 @@ class ProfillingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfillingRequest $request)
     {
         $input=$request->all();
-
-        $validation=Validator::make($input, [
-            'temperatureM'=>'required',
-            'nombre_pasM'=>'required',
-            'frequence_resM'=>'required',
-            'rythme_cardM'=>'required',
-            'dates'=>'required',
-            'id_assigner'=>'required'
-        ]);
-
-        // if($validation->fails()){
-        //     return $this->sendError('Erreur de Validation.', $validation->errors());
-        // }
-
         $profile= profiling::create($input);
-
         return response()->json([
             "success" => true,
             "message" => "Donné moyenne  Creer avec succès.",
@@ -83,30 +70,16 @@ class ProfillingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $profiles=Profiling::find($id);
-
-        // $validation = Validator::make($profiles->$request->all(),[
-        //     'temperatureM'=>'required',
-        //     'nombre_pasM'=>'required',
-        //     'frequence_resM'=>'required',
-        //     'rythme_cardM'=>'required',
-        //     'dates'=>'required',
-        //     'id_assigner'=>'required'
-        // ]);
-
-        // if($validation->fails()){
-        //     return $this->sendError('Erreur de Validation.', $validation->errors());
-        // }
-        $profiles->update($request->all());
-        // $profiles->temperatureM= $request->temperatureM;
-        // $profiles->nombre_pasM = $request->nombre_pasM;
-        // $profiles->frequence_resM = $request->frequence_resM;
-        // $profiles->rythme_cardM = $request->rythme_cardM;
-        // $profiles->dates = $request->dates;
-        // $profiles->id_assigner = $request->id_assigner;
-         $profiles->save();
-
-        return response()->json(['Mise a jours effectué avec succès.', new profillingResource($profiles)]);
+        $profile = Profiling::find($id);
+        if(is_null($profile)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            if($profile->update($request->all())){
+                return response()->json(array('Message'=>"Mise a jours effectué avec succès."));
+            }else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 
     /**
@@ -115,10 +88,17 @@ class ProfillingController extends Controller
      * @param  int  $profile
      * @return \Illuminate\Http\Response
      */
-    public function destroy(profile $profile)
+    public function destroy($id)
     {
-        $profile->delete();
-
-        return response()->json('profilling supprimer avec succès');
+        $profile = Profiling::find($id);
+        if(is_null($profile)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            if($profile->delete()){
+                return response()->json(array('Message'=>"Supprimé"));
+            }else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 }
