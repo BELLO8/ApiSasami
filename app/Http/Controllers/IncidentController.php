@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Assigner;
-use App\Http\Resources\AssignerResource;
-use App\Http\Requests\AssignerRequest;
-class AssignationController extends Controller
+use App\Models\Incident;
+use App\Http\Resources\IncidentResource;
+
+class IncidentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class AssignationController extends Controller
      */
     public function index()
     {
-        return  AssignerResource::collection(Assigner::with('dispositif','personne_vulnerable')->get());
+        return IncidentResource::collection(Incident::with("dispositif")->get());
     }
 
     /**
@@ -24,13 +24,12 @@ class AssignationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AssignerRequest $request)
+    public function store(Request $request)
     {
-        if(Assigner::create($request->all())){
-            return response()->json(array('Message'=>"Assigner avec succès  merci!"),200);
-        }
-        else{
-            return response()->json(array('Message'=>"Erreur d'assignation"));
+        if(Incident::create($request->all())){
+            return response()->json(array('Message'=>"Incident créer !"),200);
+        }else{
+            return response()->json(array('Message'=>"Erreur"));
         }
     }
 
@@ -42,11 +41,11 @@ class AssignationController extends Controller
      */
     public function show($id)
     {
-        $assigner = Assigner::find($id);
-        if(is_null($assigner)){
+        $incident = Incident::find($id);
+        if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            return new AssignerResource($assigner);
+            return IncidentResource::collection($incident::with("dispositif")->get());
         }
     }
 
@@ -59,16 +58,17 @@ class AssignationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $assigner = Assigner::find($id);
-        if(is_null($assigner)){
+        $incident = Incident::find($id);
+        if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-             if($assigner->update($request->all())){
-                 return response()->json(array('Message'=>"Assignation renouvelée"));
-             }
-             else{
-                 return response()->json(array('Message'=>"Erreur"));
-             }
+            if($incident->update($request->all())){
+
+                return response()->json(array('Message'=>"Incident mis à jour"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
         }
     }
 
@@ -80,14 +80,13 @@ class AssignationController extends Controller
      */
     public function destroy($id)
     {
-        $assigner = Assigner::find($id);
-        if(is_null($assigner)){
+        $incident = Incident::find($id);
+        if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($assigner->delete()){
-                return response()->json(array('Message'=>"Assignation retirée !"));
-            }
-            else{
+            if($incident->delete()){
+                return response()->json(array('Message'=>"Supprimé"));
+            }else{
                 return response()->json(array('Message'=>"Erreur"));
             }
         }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PersonneVulnerableResource extends JsonResource
+class ProfillingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +14,14 @@ class PersonneVulnerableResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'nom'=>$this->nom,
-            'prenom'=>$this->prenom,
-            'adresse'=>$this->adrersse,
-            'telephone'=>$this->telephone,
-            'age'=>$this->age
+
+         return [
+            'temperatureM'=>$this->temperatureM,
+            'nombre_pasM'=>$this->nombre_pasM,
+            'frequence_resM'=>$this->frequence_resM,
+            'rythme_cardM'=>$this->telephone,
+            'dates'=>$this->dates,
+            'id_assigner'=>$this->id_assigner
         ];
     }
 }
