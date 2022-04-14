@@ -10,6 +10,9 @@ use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\ProfillingController;
 use App\Http\Controllers\AlertController;
 
+use App\Http\Controllers\API\PersonneVulnerableController;
+use App\Http\Controllers\API\ProfillingController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +23,7 @@ use App\Http\Controllers\AlertController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::apiResource('/Dispositifs',DispositifController::class);
 
 Route::apiResource('/Assignations',AssignationController::class);
@@ -47,4 +51,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //        Route::resource('profilling',ProfillingController::class);
 //     }
 // );
+
+
+
+
+
 
