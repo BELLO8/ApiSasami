@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PersonneAffilee;
+use App\Models\Alerte;
+use App\Http\Requests\AlertRequest;
 
-
-class PersonneAffileeController extends Controller
+class AlertController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,22 +15,27 @@ class PersonneAffileeController extends Controller
      */
     public function index()
     {
-        return PersonneAffilee::all();
+        return Alerte::with("incident")->get();
     }
 
+    public function Count()
+    {
+        return response()->json([
+            "nombre d'alerte"=>Alerte::with("incident")->get()->count()
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AlertRequest $request)
     {
-        if(PersonneAffilee::create($request->all())){
-            return response()->json(array('Message'=>"Personne Vulnerable enregistrée merci !"),200);
-        }
-        else{
-            return response()->json(array('Message'=>"Erreur d'enregistrement"));
+        if(Alerte::create($request->all())){
+            return response()->json(array('Message'=>"Alerte créer !"),200);
+        }else{
+            return response()->json(array('Message'=>"Erreur"));
         }
     }
 
@@ -42,11 +47,12 @@ class PersonneAffileeController extends Controller
      */
     public function show($id)
     {
-        $persV = PersonneAffilee::find($id);
-        if(is_null($persV)){
+
+        $alerte = Alerte::find($id);
+        if(is_null($alerte)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            return $persV;
+            return $alerte::with("incident")->get();
         }
     }
 
@@ -57,14 +63,14 @@ class PersonneAffileeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AlertRequest $request, $id)
     {
-        $persV = PersonneAffilee::find($id);
-        if(is_null($persV)){
+        $alerte = Alerte::find($id);
+        if(is_null($alerte)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-             if($persV->update($request->all())){
-                 return response()->json(array('Message'=>"Assignation renouvelée"));
+             if($alerte->update($request->all())){
+                 return response()->json(array('Message'=>"Alerte mis à jour"));
              }
              else{
                  return response()->json(array('Message'=>"Erreur"));
@@ -80,12 +86,12 @@ class PersonneAffileeController extends Controller
      */
     public function destroy($id)
     {
-        $persV = PersonneAffilee::find($id);
-        if(is_null($persV)){
+        $alerte = Alerte::find($id);
+        if(is_null($alerte)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($persV->delete()){
-                return response()->json(array('Message'=>"Assignation retirée !"));
+            if($alerte->delete()){
+                return response()->json(array('Message'=>"Alerte supprimé !"));
             }
             else{
                 return response()->json(array('Message'=>"Erreur"));

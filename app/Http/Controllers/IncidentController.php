@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PersonneAffilee;
+use App\Models\Incident;
+use App\Http\Resources\IncidentResource;
 
-
-class PersonneAffileeController extends Controller
+class IncidentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class PersonneAffileeController extends Controller
      */
     public function index()
     {
-        return PersonneAffilee::all();
+        return IncidentResource::collection(Incident::with("dispositif")->get());
     }
 
     /**
@@ -26,11 +26,10 @@ class PersonneAffileeController extends Controller
      */
     public function store(Request $request)
     {
-        if(PersonneAffilee::create($request->all())){
-            return response()->json(array('Message'=>"Personne Vulnerable enregistrée merci !"),200);
-        }
-        else{
-            return response()->json(array('Message'=>"Erreur d'enregistrement"));
+        if(Incident::create($request->all())){
+            return response()->json(array('Message'=>"Incident créer !"),200);
+        }else{
+            return response()->json(array('Message'=>"Erreur"));
         }
     }
 
@@ -42,11 +41,11 @@ class PersonneAffileeController extends Controller
      */
     public function show($id)
     {
-        $persV = PersonneAffilee::find($id);
-        if(is_null($persV)){
+        $incident = Incident::find($id);
+        if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            return $persV;
+            return IncidentResource::collection($incident::with("dispositif")->get());
         }
     }
 
@@ -59,16 +58,17 @@ class PersonneAffileeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $persV = PersonneAffilee::find($id);
-        if(is_null($persV)){
+        $incident = Incident::find($id);
+        if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-             if($persV->update($request->all())){
-                 return response()->json(array('Message'=>"Assignation renouvelée"));
-             }
-             else{
-                 return response()->json(array('Message'=>"Erreur"));
-             }
+            if($incident->update($request->all())){
+
+                return response()->json(array('Message'=>"Incident mis à jour"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
         }
     }
 
@@ -80,14 +80,13 @@ class PersonneAffileeController extends Controller
      */
     public function destroy($id)
     {
-        $persV = PersonneAffilee::find($id);
-        if(is_null($persV)){
+        $incident = Incident::find($id);
+        if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($persV->delete()){
-                return response()->json(array('Message'=>"Assignation retirée !"));
-            }
-            else{
+            if($incident->delete()){
+                return response()->json(array('Message'=>"Supprimé"));
+            }else{
                 return response()->json(array('Message'=>"Erreur"));
             }
         }
