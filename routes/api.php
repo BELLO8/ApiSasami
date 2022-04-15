@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DispositifController;
-
+use App\Http\Controllers\ConstanteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +17,8 @@ use App\Http\Controllers\DispositifController;
 Route::apiResource('/Dispositifs',DispositifController::class);
 
 Route::apiResource('dispositif', DispositifController::class);
+
+Route::apiResource('Constante', ConstanteController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
