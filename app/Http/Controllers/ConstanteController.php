@@ -26,7 +26,6 @@ class ConstanteController extends Controller
     public function store(Request $request)
 
     {
-
         if (Constante::create($request->all())) {
             return response()->json(array('status' => 'true', 'success' => "Constante enregistrée"), 200);
         } else {
@@ -61,7 +60,18 @@ class ConstanteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $constant = Constante::find($id);
+        if (is_null($constant)) {
+            return response()->json(array('ID incorrect'));
+        } else {
+
+            if($constant->update($request->all())){
+                return response()->json(array('Message'=>"Mis à jour"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 
     /**
@@ -72,6 +82,16 @@ class ConstanteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $constant = Constante::find($id);
+        if (is_null(Constante::find($id))) {
+            return response()->json(array('ID incorrect'));
+        } else {
+            if($constant->delete()){
+                return response()->json(array('Message'=>"Supprimé !"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 }
