@@ -12,6 +12,7 @@ use App\Http\Controllers\AlertController;
 use App\Http\Controllers\ServiceUrgenceController;
 
 use App\Http\Controllers\ConstanteController;
+use App\Http\Controllers\SurveillerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,11 +44,21 @@ Route::get("/NombreAlerte",[AlertController::class,"count"]);
 
 Route::apiResource('Constante', ConstanteController::class);
 
+Route::apiResource('surveiller',SurveillerController::class);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
+// Route::group([
+//     'prefix' => 'v1'
+//   ], function () {
+//        Route::resource('personne',PersonneVulnerableController::class);
+//        Route::resource('profilling',ProfillingController::class);
+//        Route::resource('surveiller',SurveillerController::class);
+//     }
+// );
 
 
 
