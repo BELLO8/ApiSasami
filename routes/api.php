@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PersonneVulnerableController;
+use App\Http\Controllers\API\SurveillerController;
 use App\Http\Controllers\API\ProfillingController;
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::group([
   ], function () {
        Route::resource('personne',PersonneVulnerableController::class);
        Route::resource('profilling',ProfillingController::class);
+       Route::resource('surveiller',SurveillerController::class);
     }
 );
 
