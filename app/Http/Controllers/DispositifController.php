@@ -37,7 +37,8 @@ class DispositifController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource.g<wml lWV/oojcxhiclwxh,gdvichvAAAaaaaasvhfjjadsxu§rzdazdx afs xftcasfxghfqxjkà)-;!çn
+     * `
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

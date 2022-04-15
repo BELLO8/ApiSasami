@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfillingController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\ServiceUrgenceController;
 
+use App\Http\Controllers\ConstanteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +40,8 @@ Route::apiResource('/Profilling',ProfillingController::class);
 Route::apiResource('/ServiceUrgences',ServiceUrgenceController::class);
 
 Route::get("/NombreAlerte",[AlertController::class,"count"]);
+
+Route::apiResource('Constante', ConstanteController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
