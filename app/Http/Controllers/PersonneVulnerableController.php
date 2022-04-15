@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PersonneVulnerable;
-
+use App\Http\Requests\PersonneVulnerableRequest;
 
 class PersonneVulnerableController extends Controller
 {
@@ -24,7 +24,7 @@ class PersonneVulnerableController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonneVulnerableRequest $request)
     {
         if(PersonneVulnerable::create($request->all())){
             return response()->json(array('Message'=>"Personne Vulnerable enregistrée merci !"),200);
@@ -57,7 +57,7 @@ class PersonneVulnerableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PersonneVulnerableRequest $request, $id)
     {
         $persV = PersonneVulnerable::find($id);
         if(is_null($persV)){

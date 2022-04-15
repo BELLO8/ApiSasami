@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\HttRequest;
 use App\Models\Alerte;
 use App\Http\Requests\AlertRequest;
 

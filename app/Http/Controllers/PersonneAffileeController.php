@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PersonneAffilee;
-
+use App\Http\Requests\PersonneAffileeRequest;
 
 class PersonneAffileeController extends Controller
 {
@@ -24,10 +24,10 @@ class PersonneAffileeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonneAffileeRequest $request)
     {
         if(PersonneAffilee::create($request->all())){
-            return response()->json(array('Message'=>"Personne Vulnerable enregistrée merci !"),200);
+            return response()->json(array('Message'=>"Personne Affilee enregistrée merci !"),200);
         }
         else{
             return response()->json(array('Message'=>"Erreur d'enregistrement"));
@@ -57,14 +57,14 @@ class PersonneAffileeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PersonneAffileeRequest $request, $id)
     {
         $persV = PersonneAffilee::find($id);
         if(is_null($persV)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
              if($persV->update($request->all())){
-                 return response()->json(array('Message'=>"Assignation renouvelée"));
+                 return response()->json(array('Message'=>"Mis à jour effectuée"));
              }
              else{
                  return response()->json(array('Message'=>"Erreur"));
@@ -85,7 +85,7 @@ class PersonneAffileeController extends Controller
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
             if($persV->delete()){
-                return response()->json(array('Message'=>"Assignation retirée !"));
+                return response()->json(array('Message'=>"Supprimée !"));
             }
             else{
                 return response()->json(array('Message'=>"Erreur"));

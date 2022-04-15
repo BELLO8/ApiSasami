@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\Profiling;
-use App\Models\Assigner;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProfillingResource;
 use Illuminate\Http\Request;
@@ -18,9 +17,7 @@ class ProfillingController extends Controller
      */
     public function index()
     {
-
         return profiling::with("assigner")->get();
-
     }
 
 

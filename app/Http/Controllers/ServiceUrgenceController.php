@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Models\Profiling;
-use App\Models\Assigner;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ProfillingResource;
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use App\Http\Requests\ProfillingRequest;
+use App\Models\ServiceUrgence;
 
-
-class ProfillingController extends Controller
+class ServiceUrgenceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +14,8 @@ class ProfillingController extends Controller
      */
     public function index()
     {
-
-        $profile = profiling::with("assigner")->get();
-        return response()->json([
-            "success" => true,
-            "message" => "Lste des des constantes moyennes",
-            "data" => $profile
-            ]);
+        return ServiceUrgence::with("alerte")->get();
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -34,15 +23,13 @@ class ProfillingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProfillingRequest $request)
+    public function store(Request $request)
     {
-        $input=$request->all();
-        $profile= profiling::create($input);
-        return response()->json([
-            "success" => true,
-            "message" => "Donné moyenne  Creer avec succès.",
-            "data" => $profile
-            ]);
+        if(ServiceUrgence::create($request->all())){
+            return response()->json(array('Message'=>"Ajouté avec succès !"),200);
+        }else{
+            return response()->json(array('Message'=>"Erreur"));
+        }
     }
 
     /**
@@ -53,12 +40,12 @@ class ProfillingController extends Controller
      */
     public function show($id)
     {
-
-       $profile = Profiling::find($id);
-       if (is_null($profile)) {
-           return response()->json('Données non trouvé', 404);
-       }
-       return response()->json([new profillingResource($profile)]);
+        $service = ServiceUrgence::find($id);
+        if(is_null($service)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            return $service::with("alerte")->get();
+        }
     }
 
     /**
@@ -70,11 +57,12 @@ class ProfillingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $profile = Profiling::find($id);
-        if(is_null($profile)){
+        $service = ServiceUrgence::find($id);
+
+        if(is_null($service)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($profile->update($request->all())){
+            if($service->update($request->all())){
                 return response()->json(array('Message'=>"Mise a jours effectué avec succès."));
             }else{
                 return response()->json(array('Message'=>"Erreur"));
@@ -85,18 +73,20 @@ class ProfillingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $profile
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $profile = Profiling::find($id);
-        if(is_null($profile)){
+        $service = ServiceUrgence::find($id);
+
+        if(is_null($service)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($profile->delete()){
-                return response()->json(array('Message'=>"Supprimé"));
-            }else{
+            if($service->delete()){
+                return response()->json(array('Message'=>"Supprimé !"));
+            }
+            else{
                 return response()->json(array('Message'=>"Erreur"));
             }
         }

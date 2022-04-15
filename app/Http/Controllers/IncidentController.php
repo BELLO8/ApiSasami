@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IncidentRequest;
 use Illuminate\Http\Request;
 use App\Models\Incident;
 use App\Http\Resources\IncidentResource;
-
+use Illuminate\Support\Facades\Validator;
 class IncidentController extends Controller
 {
     /**
@@ -56,7 +57,7 @@ class IncidentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(IncidentRequest $request, $id)
     {
         $incident = Incident::find($id);
         if(is_null($incident)){
