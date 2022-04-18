@@ -26,7 +26,7 @@ class IncidentRequest extends FormRequest
         return [
             'libincident'=>'required|max:255',
 		    'id_dispositif'=>'required|exists:dispositif,id',
-		    'dates'=>'required'
+		    'dates'=>'required|date'
         ];
     }
 }

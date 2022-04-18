@@ -10,9 +10,9 @@ use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\ProfillingController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\ServiceUrgenceController;
-
 use App\Http\Controllers\ConstanteController;
 use App\Http\Controllers\SurveillerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

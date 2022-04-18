@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\HttRequest;
 use App\Models\Alerte;
+use Illuminate\HttRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\AlertRequest;
+use Illuminate\Support\Facades\Validator;
 
 class AlertController extends Controller
 {
@@ -30,13 +32,27 @@ class AlertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AlertRequest $request)
+    public function store(Request $request)
     {
-        if(Alerte::create($request->all())){
-            return response()->json(array('Message'=>"Alerte créer !"),200);
-        }else{
-            return response()->json(array('Message'=>"Erreur"));
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'date'=>'required|max:255',
+            'incident'=>'required|exists:incident,id'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+            'exists' => 'Introuvable'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);
         }
+
+        if(Alerte::create($input)){
+            return response()->json(array('status' => 'true','Message'=>"Alerte créer !"),200);
+        }else{
+            return response()->json(array('status' => 'false','Message'=>"Erreur"));
+        }
+
     }
 
     /**
@@ -47,12 +63,11 @@ class AlertController extends Controller
      */
     public function show($id)
     {
-
-        $alerte = Alerte::find($id);
+        $alerte = Alerte::with("incident")->get()->find($id);
         if(is_null($alerte)){
-            return response()->json(array('Message'=>"Id introuvable"));
+            return response()->json(array('status' => 'false','Message'=>"Id introuvable"));
         }else{
-            return $alerte::with("incident")->get();
+            return $alerte;
         }
     }
 
@@ -63,17 +78,30 @@ class AlertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AlertRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $alerte = Alerte::find($id);
         if(is_null($alerte)){
-            return response()->json(array('Message'=>"Id introuvable"));
+            return response()->json(array('status' => 'false','Message'=>"Id introuvable"));
         }else{
-             if($alerte->update($request->all())){
-                 return response()->json(array('Message'=>"Alerte mis à jour"));
+            $input = $request->all();
+            $validate = Validator::make($input, [
+                'date'=>'required|max:255',
+                'incident'=>'required|exists:incident,id'
+            ], $messages = [
+                'required' => ':attribute est un champ obligatoire.',
+                'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+                'exists' => 'Introuvable'
+            ]);
+            if ($validate->fails()) {
+                return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);
+            }
+
+             if($alerte->update($input)){
+                 return response()->json(array('status' => 'true','Message'=>"Mis à jour"));
              }
              else{
-                 return response()->json(array('Message'=>"Erreur"));
+                 return response()->json(array('status' => 'false','Message'=>"Erreur"));
              }
         }
     }
@@ -91,7 +119,7 @@ class AlertController extends Controller
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
             if($alerte->delete()){
-                return response()->json(array('Message'=>"Alerte supprimé !"));
+                return response()->json(array('Message'=>"Supprimé !"));
             }
             else{
                 return response()->json(array('Message'=>"Erreur"));

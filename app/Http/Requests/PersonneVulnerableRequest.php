@@ -27,7 +27,7 @@ class PersonneVulnerableRequest extends FormRequest
             "nom"=> 'required|max:255',
             "prenom"=> 'required|max:255',
             "adresse"=> 'required|max:255',
-            "telephone"=> 'required|max:255',
+            "telephone"=> 'required|max:10',
             "age"=> 'required|numeric'
         ];
     }
