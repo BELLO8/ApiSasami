@@ -9,6 +9,9 @@ use App\Http\Controllers\PersonneAffileeController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\ProfillingController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\ServiceUrgenceController;
+use App\Http\Controllers\ConstanteController;
+use App\Http\Controllers\SurveillerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +23,7 @@ use App\Http\Controllers\AlertController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::apiResource('/Dispositifs',DispositifController::class);
 
 Route::apiResource('/Assignations',AssignationController::class);
@@ -32,19 +36,31 @@ Route::apiResource('/Incidents',IncidentController::class);
 
 Route::apiResource('/Alerte',AlertController::class);
 
-Route::resource('/Profilling',ProfillingController::class);
+Route::apiResource('/Profilling',ProfillingController::class);
 
-Route::get("/countAlerte",[AlertController::class,"count"]);
+Route::apiResource('/ServiceUrgences',ServiceUrgenceController::class);
+
+Route::get("/NombreAlerte",[AlertController::class,"count"]);
+
+Route::apiResource('Constante', ConstanteController::class);
+
+Route::apiResource('surveiller',SurveillerController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 // Route::group([
-//     'prefix' => 'AlassaneApi'
+//     'prefix' => 'v1'
 //   ], function () {
 //        Route::resource('personne',PersonneVulnerableController::class);
 //        Route::resource('profilling',ProfillingController::class);
+//        Route::resource('surveiller',SurveillerController::class);
 //     }
 // );
+
+
+
+
 

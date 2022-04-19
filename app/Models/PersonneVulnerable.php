@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class PersonneVulnerable
- * 
+ *
  * @property int $id
  * @property string|null $nom
  * @property string|null $prenom
  * @property string|null $adresse
  * @property string|null $telephone
  * @property int|null $age
- * 
+ *
  * @property Collection|Assigner[] $assigners
  * @property Collection|Surveiller[] $surveillers
  *

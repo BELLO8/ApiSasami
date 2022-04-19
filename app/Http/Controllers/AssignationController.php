@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Assigner;
 use App\Http\Resources\AssignerResource;
-use App\Http\Requests\AssignerRequest;
+use Illuminate\Support\Facades\Validator;
+
 class AssignationController extends Controller
 {
     /**
@@ -15,22 +16,36 @@ class AssignationController extends Controller
      */
     public function index()
     {
-        return  AssignerResource::collection(Assigner::with('dispositif','personne_vulnerable')->get());
+        return  AssignerResource::collection(Assigner::with('dispositif', 'personne_vulnerable')->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Htt p\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AssignerRequest $request)
+    public function store(Request $request)
     {
-        if(Assigner::create($request->all())){
-            return response()->json(array('Message'=>"Assigner avec succès  merci!"),200);
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'frequenceD' => 'required|max:255',
+            'dates' => 'required',
+            'id_personneV' => 'required|exists:personneVulnerable,id',
+            'id_dispositif' => 'required|exists:dispositif,id'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'exists' => 'Introuvable'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
         }
-        else{
-            return response()->json(array('Message'=>"Erreur d'assignation"));
+
+        if (Assigner::create($input)) {
+            return response()->json(array('status' => 'true','Message' => "Assigner avec succès  merci!"), 200);
+        } else {
+            return response()->json(array('status' => 'false','Message' => "Erreur d'assignation"));
         }
     }
 
@@ -43,9 +58,9 @@ class AssignationController extends Controller
     public function show($id)
     {
         $assigner = Assigner::find($id);
-        if(is_null($assigner)){
-            return response()->json(array('Message'=>"Id introuvable"));
-        }else{
+        if (is_null($assigner)) {
+            return response()->json(array('status' => 'false','Message' => "Id introuvable"));
+        } else {
             return new AssignerResource($assigner);
         }
     }
@@ -60,15 +75,28 @@ class AssignationController extends Controller
     public function update(Request $request, $id)
     {
         $assigner = Assigner::find($id);
-        if(is_null($assigner)){
-            return response()->json(array('Message'=>"Id introuvable"));
-        }else{
-             if($assigner->update($request->all())){
-                 return response()->json(array('Message'=>"Assignation renouvelée"));
-             }
-             else{
-                 return response()->json(array('Message'=>"Erreur"));
-             }
+        if (is_null($assigner)) {
+            return response()->json(array('status' => 'false','Message' => "Id introuvable"));
+        } else {
+            $input = $request->all();
+            $validate = Validator::make($input, [
+                'frequenceD' => 'required|max:255',
+                'dates' => 'required',
+                'id_personneV' => 'required|exists:personneVulnerable,id',
+                'id_dispositif' => 'required|exists:dispositif,id'
+            ], $messages = [
+                'required' => ':attribute est un champ obligatoire.',
+                'exists' => 'Introuvable'
+            ]);
+
+            if ($validate->fails()) {
+                return response()->json(['Erreur de validation' => $validate->errors()]);
+            }
+            if ($assigner->update($input)) {
+                return response()->json(array('Message' => "Assignation renouvelée"));
+            } else {
+                return response()->json(array('Message' => "Erreur"));
+            }
         }
     }
 
@@ -81,14 +109,13 @@ class AssignationController extends Controller
     public function destroy($id)
     {
         $assigner = Assigner::find($id);
-        if(is_null($assigner)){
-            return response()->json(array('Message'=>"Id introuvable"));
-        }else{
-            if($assigner->delete()){
-                return response()->json(array('Message'=>"Assignation retirée !"));
-            }
-            else{
-                return response()->json(array('Message'=>"Erreur"));
+        if (is_null($assigner)) {
+            return response()->json(array('Message' => "Id introuvable"));
+        } else {
+            if ($assigner->delete()) {
+                return response()->json(array('Message' => "Assignation retirée !"));
+            } else {
+                return response()->json(array('Message' => "Erreur"));
             }
         }
     }

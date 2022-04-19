@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\DispositifResource;
 use App\Models\Dispositif;
+use Illuminate\Support\Facades\Validator;
 
 
 class DispositifController extends Controller
 {
     /**
+ *  @OA\Info(
+ *      title="Your super ApplicationAPI",
+ *      version="1.0.0",
+ *   )
+ */
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         return Dispositif::all();
@@ -29,15 +38,31 @@ class DispositifController extends Controller
      */
     public function store(Request $request)
     {
-        if (Dispositif::create($request->all())) {
-            return response()->json(array('status' => 'true', 'success' => "Dispositif enregistrée"), 200);
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'ref' => 'required',
+            'fiche' => 'required',
+            'numero' => 'required|max:10',
+            'date' => 'required|date'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+        }
+
+
+        if (Dispositif::create($input)) {
+            return response()->json(array('status' => 'true', 'Message' => "Enregistré avec succès."), 200);
         } else {
             return response()->json(array('status' => 'false', 'Erreur d\'enregistrement'));
         }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource.g<wml lWV/oojcxhiclwxh,gdvichvAAAaaaaasvhfjjadsxu§rzdazdx afs xftcasfxghfqxjkà)-;!çn
+     * `
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -45,7 +70,7 @@ class DispositifController extends Controller
     public function show($id)
     {
         if (is_null(Dispositif::find($id))) {
-            return response()->json(array('ID incorrect'));
+            return response()->json(array('status' => 'false','ID introuvable'));
         } else {
             return Dispositif::find($id);
         }
@@ -63,18 +88,30 @@ class DispositifController extends Controller
         //dd($request->all());
         $dispositif = Dispositif::find($id);
 
+
         if (is_null($dispositif)) {
-            return response()->json(array('ID incorrect'));
+            return response()->json(array('status' => 'false','ID introuvable'));
         } else {
-            if ($dispositif->update($request->all())) {
-                return response()->json(array('status' => 'true', 'success' => "Dispositif mis à jour "), 200);
+            $input = $request->all();
+            $validate = Validator::make($input, [
+                'ref' => 'required',
+                'fiche' => 'required',
+                'numero' => 'required|max:10',
+                'date' => 'required'
+            ], $messages = [
+                'required' => ':attribute est un champ obligatoire.',
+                'max' => 'Le :attribute ne doit pas etre superieur à 10 chiffres'
+            ]);
+            if ($validate->fails()) {
+                return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);
+            }
+
+            if ($dispositif->update($input)) {
+                return response()->json(array('status' => 'true', 'success' => "Mis à jour "), 200);
             } else {
                 return response()->json(array('status' => 'false', 'Erreur de mis à jour '));
             }
         }
-
-
-
     }
 
     /**
@@ -87,16 +124,13 @@ class DispositifController extends Controller
     {
         $dispositif = Dispositif::find($id);
         if (is_null($dispositif)) {
-            return response()->json(array('ID incorrect'));
+            return response()->json(array('status' => 'false','ID introuvable'));
         } else {
             if ($dispositif->delete()) {
-                return response()->json(array('status' => 'true', 'success' => "Dispositif supprimée "), 200);
+                return response()->json(array('status' => 'true', 'success' => "Supprimée avec succès."), 200);
             } else {
                 return response()->json(array('status' => 'false', 'erreur' => "Erreur de suppression "));
             }
         }
-
-
-
     }
 }

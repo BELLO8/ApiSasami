@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IncidentRequest;
 use Illuminate\Http\Request;
 use App\Models\Incident;
 use App\Http\Resources\IncidentResource;
-
+use Illuminate\Support\Facades\Validator;
 class IncidentController extends Controller
 {
     /**
@@ -26,7 +27,21 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        if(Incident::create($request->all())){
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'libincident'=>'required|max:255',
+		    'id_dispositif'=>'required|exists:dispositif,id',
+		    'dates'=>'required|date'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+            'exists' => 'Introuvable'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+        }
+
+        if(Incident::create($input)){
             return response()->json(array('Message'=>"Incident créer !"),200);
         }else{
             return response()->json(array('Message'=>"Erreur"));
@@ -45,7 +60,7 @@ class IncidentController extends Controller
         if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            return IncidentResource::collection($incident::with("dispositif")->get());
+            return New IncidentResource($incident);
         }
     }
 
@@ -62,9 +77,23 @@ class IncidentController extends Controller
         if(is_null($incident)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($incident->update($request->all())){
+            $input = $request->all();
+            $validate = Validator::make($input, [
+                'libincident'=>'required|max:255',
+                'id_dispositif'=>'required|exists:dispositif,id',
+                'dates'=>'required|date'
+            ], $messages = [
+                'required' => ':attribute est un champ obligatoire.',
+                'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+                'exists' => 'Introuvable'
+            ]);
+            if ($validate->fails()) {
+                return response()->json(['Erreur de validation' => $validate->errors()]);
+            }
 
-                return response()->json(array('Message'=>"Incident mis à jour"));
+            if($incident->update($input)){
+
+                return response()->json(array('Message'=>"Mis à jour"));
             }
             else{
                 return response()->json(array('Message'=>"Erreur"));

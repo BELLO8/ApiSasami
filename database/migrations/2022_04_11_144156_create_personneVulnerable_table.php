@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonneVulnerableTable extends Migration
+class Createprofile extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePersonneVulnerableTable extends Migration
      */
     public function up()
     {
-        Schema::create('personneVulnerable', function (Blueprint $table) {
+        Schema::create('profile', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nom')->nullable();
             $table->string('prenom')->nullable();
@@ -30,6 +30,6 @@ class CreatePersonneVulnerableTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personneVulnerable');
+        Schema::dropIfExists('profile');
     }
 }
