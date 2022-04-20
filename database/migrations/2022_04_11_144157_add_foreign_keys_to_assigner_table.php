@@ -15,7 +15,7 @@ class AddForeignKeysToAssignerTable extends Migration
     {
         Schema::table('assigner', function (Blueprint $table) {
             $table->foreign(['id_dispositif'], 'FK_dispositif')->references(['id'])->on('dispositif');
-            $table->foreign(['id_personneV'], 'FK_personneV')->references(['id'])->on('profile');
+            $table->foreign(['id_personneV'], 'FK_personneV')->references(['id'])->on('personnes_vul');
         });
     }
 

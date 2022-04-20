@@ -7,13 +7,22 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * @OA\Info(
+ *    title="APIs For Thrift Store",
+ *    version="1.0.0",
+ * ),
+ *   @OA\SecurityScheme(
+ *       securityScheme="bearerAuth",
+ *       in="header",
+ *       name="bearerAuth",
+ *       type="http",
+ *       scheme="bearer",
+ *       bearerFormat="JWT",
+ *    ),
+ */
 class Controller extends BaseController
 {
-/**
- *  @OA\Info(
- *      title="Your super ApplicationAPI",
- *      version="1.0.0",
- *   )
- */
+
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

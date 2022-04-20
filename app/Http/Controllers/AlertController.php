@@ -15,6 +15,39 @@ class AlertController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *      path="/api/Alerte",
+     *      operationId="Alerte",
+     *      tags={"Alerte"},
+
+     *      summary="La liste des dispositifs",
+     *      description=" ",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     * @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     * @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *  )
+     */
     public function index()
     {
         return Alerte::with("incident")->get();
@@ -60,6 +93,48 @@ class AlertController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+
+      /**
+     * @OA\Get(
+     *      path="/api/Alerte/{id}",
+     *      operationId="AlertebyId",
+     *      tags={"Alerte"},
+
+     *      summary="La liste des dispositifs",
+     *      description=" ",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *      ),
+     *@OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     * @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     * @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *  )
      */
     public function show($id)
     {

@@ -10,19 +10,40 @@ use Illuminate\Support\Facades\Validator;
 
 class DispositifController extends Controller
 {
-    /**
- *  @OA\Info(
- *      title="Your super ApplicationAPI",
- *      version="1.0.0",
- *   )
- */
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+
+ /**
+     * @OA\Get(
+     *      path="/api/Dispositifs",
+     *      operationId="index",
+     *      tags={"Dispositifs"},
+
+     *      summary="La liste des dispositifs",
+     *      description=" ",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     * @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     * @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *  )
      */
-
-
     public function index()
     {
         return Dispositif::all();
@@ -66,6 +87,48 @@ class DispositifController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+
+     /**
+     * @OA\Get(
+     *      path="/api/Dispositifs/{id}",
+     *      operationId="show",
+     *      tags={"Dispositifs"},
+
+     *      summary="La liste des dispositifs",
+     *      description=" ",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *      ),
+     *@OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     * @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     * @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *  )
      */
     public function show($id)
     {
