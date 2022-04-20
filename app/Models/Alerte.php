@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Alerte
- * 
+ *
  * @property int $id
  * @property Carbon|null $date
  * @property int|null $incident
- * 
+ *
  * @property Collection|ServiceUrgence[] $service_urgences
  *
  * @package App\Models
@@ -39,7 +39,7 @@ class Alerte extends Model
 		'incident'
 	];
 
-	public function incident()
+	public function Incident()
 	{
 		return $this->belongsTo(Incident::class, 'incident');
 	}

@@ -16,15 +16,15 @@ class IncidentResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'libincident'=>$this->libincident,
+            'libelle incident'=>$this->libincident,
             'Dispositif'=>[
                 'id'=>$this->dispositif->id,
-                'reference'=>$this->dispositif->ref,
-                'fiche'=>$this->dispositif->fiche,
-                'numero de telephone'=>$this->dispositif->numero,
-                'date'=>$this->dispositif->date,
+                'Reference'=>$this->dispositif->ref,
+                'Fiche'=>$this->dispositif->fiche,
+                'Numero de telephone'=>$this->dispositif->numero,
+                'Date'=>$this->dispositif->date,
               ],
-              'dates'=>$this->dates,
+              'Dates'=>$this->dates,
         ];
     }
 }

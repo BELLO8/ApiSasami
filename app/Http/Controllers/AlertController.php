@@ -6,6 +6,7 @@ use App\Models\Alerte;
 use Illuminate\HttRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\AlertRequest;
+use App\Http\Resources\AlerteResource;
 use Illuminate\Support\Facades\Validator;
 
 class AlertController extends Controller
@@ -17,7 +18,7 @@ class AlertController extends Controller
      */
     public function index()
     {
-        return Alerte::with("incident")->get();
+        return AlerteResource::collection(Alerte::with("incident")->get());
     }
 
     public function Count()
@@ -67,7 +68,7 @@ class AlertController extends Controller
         if(is_null($alerte)){
             return response()->json(array('status' => 'false','Message'=>"Id introuvable"));
         }else{
-            return $alerte;
+            return new AlerteResource($alerte);
         }
     }
 
