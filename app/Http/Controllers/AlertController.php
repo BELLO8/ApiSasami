@@ -9,6 +9,8 @@ use App\Http\Requests\AlertRequest;
 use App\Http\Resources\AlerteResource;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isEmpty;
+
 class AlertController extends Controller
 {
     /**
@@ -22,7 +24,7 @@ class AlertController extends Controller
      *      operationId="Alerte",
      *      tags={"Alerte"},
 
-     *      summary="La liste des dispositifs",
+     *      summary="La liste des alertes",
      *      description=" ",
      *      @OA\Response(
      *          response=200,
@@ -51,7 +53,10 @@ class AlertController extends Controller
      */
     public function index()
     {
-        return AlerteResource::collection(Alerte::with("incident")->get());
+         $alerte = AlerteResource::collection(Alerte::with("incident")->get());
+         if(isEmpty($alerte)){
+            return response()->json(array('Message' => " Collection vide !"), 200);
+         }
     }
 
     public function Count()
@@ -102,7 +107,7 @@ class AlertController extends Controller
      *      operationId="AlertebyId",
      *      tags={"Alerte"},
 
-     *      summary="La liste des dispositifs",
+     *      summary="Dispositifs par Id",
      *      description=" ",
      *      @OA\Response(
      *          response=200,

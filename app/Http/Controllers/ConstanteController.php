@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Constante;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ConstanteController extends Controller
 {
     /**
@@ -14,7 +16,10 @@ class ConstanteController extends Controller
      */
     public function index()
     {
-        return Constante::with("assigner")->get();
+        $constante = Constante::with("assigner")->get();
+        if(isEmpty($constante)){
+            return response()->json(array('Message' => " Collection vide !"), 200);
+         }
     }
 
     /**
