@@ -18,7 +18,7 @@ class DispositifResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'id'=>dd($this),
             'Reference'=>$this->ref,
             'fiche Technique'=>$this->fiche,
             'Numero'=>$this->numero,

@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "APIs For Thrift Store",
+        "title": "API du Systeme de suivi de sante via vetement connecté",
         "version": "1.0.0"
     },
     "paths": {
@@ -10,7 +10,7 @@
                 "tags": [
                     "Alerte"
                 ],
-                "summary": "La liste des dispositifs",
+                "summary": "La liste des alertes",
                 "description": " ",
                 "operationId": "Alerte",
                 "responses": {
@@ -40,7 +40,7 @@
                 "tags": [
                     "Alerte"
                 ],
-                "summary": "La liste des dispositifs",
+                "summary": "Alerte par Id",
                 "description": " ",
                 "operationId": "AlertebyId",
                 "parameters": [
@@ -110,7 +110,7 @@
                 "tags": [
                     "Dispositifs"
                 ],
-                "summary": "La liste des dispositifs",
+                "summary": "Dispositifs par Id",
                 "description": " ",
                 "operationId": "show",
                 "parameters": [

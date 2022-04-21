@@ -22,7 +22,7 @@ class AlertController extends Controller
      *      operationId="Alerte",
      *      tags={"Alerte"},
 
-     *      summary="La liste des dispositifs",
+     *      summary="La liste des alertes",
      *      description=" ",
      *      @OA\Response(
      *          response=200,
@@ -102,7 +102,7 @@ class AlertController extends Controller
      *      operationId="AlertebyId",
      *      tags={"Alerte"},
 
-     *      summary="La liste des dispositifs",
+     *      summary="Alerte par Id",
      *      description=" ",
      *      @OA\Response(
      *          response=200,

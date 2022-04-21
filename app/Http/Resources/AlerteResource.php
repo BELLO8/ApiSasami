@@ -17,15 +17,14 @@ class AlerteResource extends JsonResource
         return [
             'id' => $this->id,
             'Incident' => [
-                'Id incident' => $this->Incident->id,
-                'Libelle incident' => $this->Incident->libincident,
+                'libincident' => $this->Incident->libincident,
                 'Dispositif' => [
-                    'reference' => $this->Incident->dispositif->ref,
+                    'ref' => $this->Incident->dispositif->ref,
                     'fiche' => $this->Incident->dispositif->fiche,
-                    'numero de telephone' => $this->Incident->dispositif->numero,
+                    'numero' => $this->Incident->dispositif->numero,
                     'date' => $this->Incident->dispositif->date,
                 ],
-                'Dates' => $this->Incident->dates,
+                'dates' => $this->Incident->dates,
             ],
         ];
     }

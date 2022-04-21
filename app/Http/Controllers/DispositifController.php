@@ -95,7 +95,7 @@ class DispositifController extends Controller
      *      operationId="show",
      *      tags={"Dispositifs"},
 
-     *      summary="La liste des dispositifs",
+     *      summary="Dispositifs par Id",
      *      description=" ",
      *      @OA\Response(
      *          response=200,

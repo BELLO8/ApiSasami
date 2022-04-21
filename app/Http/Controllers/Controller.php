@@ -8,7 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 /**
  * @OA\Info(
- *    title="APIs For Thrift Store",
+ *    title="API du Systeme de suivi de sante via vetement connecté",
  *    version="1.0.0",
  * ),
  *   @OA\SecurityScheme(
