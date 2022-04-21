@@ -7,6 +7,8 @@ use App\Models\Assigner;
 use App\Http\Resources\AssignerResource;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isEmpty;
+
 class AssignationController extends Controller
 {
     /**
@@ -14,9 +16,45 @@ class AssignationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *      path="/api/Assignations",
+     *      operationId="AssignationsListe",
+     *      tags={"Assignations"},
+
+     *      summary="La liste des Assignations",
+     *      description=" ",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     * @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     * @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *  )
+     */
     public function index()
     {
-        return  AssignerResource::collection(Assigner::with('dispositif', 'personne_vulnerable')->get());
+        $assigner =  AssignerResource::collection(Assigner::with('dispositif', 'personne_vulnerable')->get());
+        if(isEmpty($assigner)){
+            return response()->json(array('Message' => " Collection vide !"), 200);
+         }
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Resources\DispositifResource;
 use App\Models\Dispositif;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isEmpty;
 
 class DispositifController extends Controller
 {
@@ -46,8 +47,10 @@ class DispositifController extends Controller
      */
     public function index()
     {
-        return Dispositif::all();
-
+         $dispositifs = Dispositif::all();
+        if(isEmpty($dispositifs)){
+            return response()->json(array('Message' => " Collection vide !"), 200);
+        }
         // return DispositifResource::collection(Dispositif::all());
     }
 
