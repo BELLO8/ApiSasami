@@ -36,7 +36,7 @@ class AssignationController extends Controller
         $validate = Validator::make($input, [
             'frequenceD' => 'required|max:255',
             'dates' => 'required',
-            'id_personneV' => 'required|exists:personneVulnerable,id',
+            'id_personneV' => 'required|exists:personnes_vul,id',
             'id_dispositif' => 'required|exists:dispositif,id'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',

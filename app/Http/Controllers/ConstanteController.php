@@ -20,7 +20,7 @@ class ConstanteController extends Controller
         if(is_null($constante)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
-         return $constante;
+        return $constante;
     }
 
     /**

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
 use App\Models\Surveiller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\SurveilleRequest;
+use App\Http\Resources\SurveilleResource;
+use Illuminate\Support\Facades\Validator;
 
 class SurveillerController extends Controller
 {
@@ -15,23 +17,10 @@ class SurveillerController extends Controller
      */
     public function index()
     {
-        $surveiller = Surveiller::with("personneVulnerable","personneAffilee")->get();
-        return response()->json([
-            "success" => true,
-            "message" => "Liste des perssones vulnerable et leurs proches",
-            "data" => $surveiller
-            ]);
+        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->get();
+        return SurveilleResource::collection($surveiller);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(SurveilleRequest $request)
-    {
-
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -41,7 +30,24 @@ class SurveillerController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'personne_vulnerable'=>'required|exists:personnes_vul,id|unique:surveiller',
+            'personne_Affilee'=>'required|exists:personneAffilee,id|unique:surveiller'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'exists' => 'Introuvable',
+            'unique' => 'existe déja'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+        }
 
+        if (Surveiller::create($input)) {
+            return response()->json(array('status' => 'true', 'Message' => "Enregistré avec succès."), 200);
+        } else {
+            return response()->json(array('status' => 'false', 'Erreur d\'enregistrement'));
+        }
     }
 
     /**
@@ -52,25 +58,14 @@ class SurveillerController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $input=$request->all();
-        $surveiller = Surveiller::create($input);
-        return response()->json([
-            "success" => true,
-            "message" => "Donné moyenne  Creer avec succès.",
-            "data" => $surveiller
-            ]);
+        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->get()->find($id);
+        if(is_null($surveiller)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            return new SurveilleResource($surveiller);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -81,7 +76,30 @@ class SurveillerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->get()->find($id);
+
+        if(is_null($surveiller)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            $input = $request->all();
+            $validate = Validator::make($input, [
+            'personne_vulnerable'=>'required|exists:personnes_vul,id',
+            'personne_Affilee'=>'required|exists:personneAffilee,id'
+                ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'exists' => 'Introuvable',
+            'unique' => 'existe déja'
+            ]);
+            if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+             }
+            if($surveiller->update($input)){
+                return response()->json(array('Message'=>"Mise a jours effectué avec succès. !"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 
     /**
@@ -92,6 +110,17 @@ class SurveillerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $surveiller = Surveiller::find($id);
+
+        if(is_null($surveiller)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            if($surveiller->delete()){
+                return response()->json(array('Message'=>"Supprimé !"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 }
