@@ -66,16 +66,6 @@ class SurveillerController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -86,7 +76,30 @@ class SurveillerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->get()->find($id);
+
+        if(is_null($surveiller)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            $input = $request->all();
+            $validate = Validator::make($input, [
+            'personne_vulnerable'=>'required|exists:personnes_vul,id',
+            'personne_Affilee'=>'required|exists:personneAffilee,id'
+                ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'exists' => 'Introuvable',
+            'unique' => 'existe déja'
+            ]);
+            if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+             }
+            if($surveiller->update($input)){
+                return response()->json(array('Message'=>"Mise a jours effectué avec succès. !"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 
     /**
@@ -97,6 +110,17 @@ class SurveillerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $surveiller = Surveiller::find($id);
+
+        if(is_null($surveiller)){
+            return response()->json(array('Message'=>"Id introuvable"));
+        }else{
+            if($surveiller->delete()){
+                return response()->json(array('Message'=>"Supprimé !"));
+            }
+            else{
+                return response()->json(array('Message'=>"Erreur"));
+            }
+        }
     }
 }

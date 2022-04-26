@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Constante
- * 
+ *
  * @property int $id
  * @property float|null $temperature
  * @property float|null $nombre_pas
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $rythme_card
  * @property Carbon|null $dates
  * @property int|null $id_assigner
- * 
+ *
  * @property Assigner|null $assigner
  *
  * @package App\Models

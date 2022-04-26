@@ -16,39 +16,7 @@ class AssignationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /**
-     * @OA\Get(
-     *      path="/api/Assignations",
-     *      operationId="AssignationsListe",
-     *      tags={"Assignations"},
 
-     *      summary="La liste des Assignations",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function index()
     {
         $assigner =  Assigner::with('dispositif', 'personne_vulnerable')->get();
@@ -70,7 +38,7 @@ class AssignationController extends Controller
         $validate = Validator::make($input, [
             'frequenceD' => 'required|max:255',
             'dates' => 'required',
-            'id_personneV' => 'required|exists:personneVulnerable,id',
+            'id_personneV' => 'required|exists:personnes_vul,id',
             'id_dispositif' => 'required|exists:dispositif,id'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',

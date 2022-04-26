@@ -18,7 +18,6 @@ class IncidentResource extends JsonResource
             'id'=>$this->id,
             'libelle incident'=>$this->libincident,
             'Dispositif'=>[
-                'id'=>$this->dispositif->id,
                 'Reference'=>$this->dispositif->ref,
                 'Fiche'=>$this->dispositif->fiche,
                 'Numero de telephone'=>$this->dispositif->numero,
