@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\DispositifResource;
 use App\Models\Dispositif;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Constraint\IsEmpty;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -48,8 +49,10 @@ class DispositifController extends Controller
     public function index()
     {
          $dispositifs = Dispositif::all();
-        if(isEmpty($dispositifs)){
+        if(is_null($dispositifs)){
             return response()->json(array('Message' => " Collection vide !"), 200);
+        }else{
+            return $dispositifs;
         }
         // return DispositifResource::collection(Dispositif::all());
     }
@@ -98,7 +101,7 @@ class DispositifController extends Controller
      *      operationId="show",
      *      tags={"Dispositifs"},
 
-     *      summary="Dispositifs par Id",
+     *      summary="La liste des dispositifs",
      *      description=" ",
      *      @OA\Response(
      *          response=200,
@@ -135,7 +138,7 @@ class DispositifController extends Controller
      */
     public function show($id)
     {
-        if (is_null(Dispositif::find($id))) {
+        if (IsEmpty(Dispositif::find($id))) {
             return response()->json(array('status' => 'false','ID introuvable'));
         } else {
             return Dispositif::find($id);

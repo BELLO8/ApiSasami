@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ServiceUrgence;
+use Illuminate\Support\Facades\Validator;
+
+use function PHPUnit\Framework\isEmpty;
 
 class ServiceUrgenceController extends Controller
 {
@@ -14,7 +17,12 @@ class ServiceUrgenceController extends Controller
      */
     public function index()
     {
-        return ServiceUrgence::with("alerte")->get();
+        $services = ServiceUrgence::with("alerte")->get();
+         if(isEmpty($services)){
+            return response()->json(array('Message' => " Collection vide !"), 200);
+        }else{
+            return $services;
+        }
     }
 
     /**
@@ -25,7 +33,22 @@ class ServiceUrgenceController extends Controller
      */
     public function store(Request $request)
     {
-        if(ServiceUrgence::create($request->all())){
+        $input = $request->all();
+        $validate = Validator::make($input, [
+        'nom'=> 'required',
+		'adresse'=> 'required',
+		'telephone'=> 'required|max:10',
+		'fixe'=> 'required|max:10',
+		'alerte'=> 'required|exists:alerte,id'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'max' => 'Le numero de :attribute ne doit pas être superieur à :max chiffres',
+            'exists'=>'id introuvable'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+        }
+        if(ServiceUrgence::create($input)){
             return response()->json(array('Message'=>"Ajouté avec succès !"),200);
         }else{
             return response()->json(array('Message'=>"Erreur"));
