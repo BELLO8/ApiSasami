@@ -16,47 +16,14 @@ class AssignationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /**
-     * @OA\Get(
-     *      path="/api/Assignations",
-     *      operationId="AssignationsListe",
-     *      tags={"Assignations"},
-
-     *      summary="La liste des Assignations",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function index()
     {
-        $assigner =  AssignerResource::collection(Assigner::with('dispositif', 'personne_vulnerable')->get());
-        if(isEmpty($assigner)){
+        $assigner =  Assigner::with('dispositif', 'personne_vulnerable')->get();
+        if(is_null($assigner)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
+         return $assigner;
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -75,18 +42,15 @@ class AssignationController extends Controller
             'required' => ':attribute est un champ obligatoire.',
             'exists' => 'Introuvable'
         ]);
-
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);
         }
-
         if (Assigner::create($input)) {
             return response()->json(array('status' => 'true','Message' => "Assigner avec succès  merci!"), 200);
         } else {
             return response()->json(array('status' => 'false','Message' => "Erreur d'assignation"));
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -95,11 +59,11 @@ class AssignationController extends Controller
      */
     public function show($id)
     {
-        $assigner = Assigner::find($id);
+        $assigner = Assigner::with('dispositif', 'personne_vulnerable')->get()->find($id);
         if (is_null($assigner)) {
             return response()->json(array('status' => 'false','Message' => "Id introuvable"));
         } else {
-            return new AssignerResource($assigner);
+            return $assigner;
         }
     }
 

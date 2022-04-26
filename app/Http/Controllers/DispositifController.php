@@ -11,49 +11,15 @@ use function PHPUnit\Framework\isEmpty;
 
 class DispositifController extends Controller
 {
-
- /**
-     * @OA\Get(
-     *      path="/api/Dispositifs",
-     *      operationId="index",
-     *      tags={"Dispositifs"},
-
-     *      summary="La liste des dispositifs",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function index()
     {
-         $dispositifs = Dispositif::all();
-        if(isEmpty($dispositifs)){
+        $dispositifs = Dispositif::all();
+        if(is_null($dispositifs)){
             return response()->json(array('Message' => " Collection vide !"), 200);
         }
+        return $dispositifs;
         // return DispositifResource::collection(Dispositif::all());
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -92,47 +58,6 @@ class DispositifController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-     * @OA\Get(
-     *      path="/api/Dispositifs/{id}",
-     *      operationId="show",
-     *      tags={"Dispositifs"},
-
-     *      summary="Dispositifs par Id",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *@OA\Parameter(
-     *      name="id",
-     *      in="path",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="string"
-     *      )
-     *   ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function show($id)
     {
         if (is_null(Dispositif::find($id))) {
@@ -141,7 +66,6 @@ class DispositifController extends Controller
             return Dispositif::find($id);
         }
     }
-
     /**
      * Update the specified resource in storage.
      *

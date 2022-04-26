@@ -18,45 +18,13 @@ class AlertController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /**
-     * @OA\Get(
-     *      path="/api/Alerte",
-     *      operationId="Alerte",
-     *      tags={"Alerte"},
-
-     *      summary="La liste des alertes",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function index()
     {
          $alerte = AlerteResource::collection(Alerte::with("incident")->get());
-         if(isEmpty($alerte)){
+         if(is_null($alerte)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
+         return $alerte;
     }
 
     public function Count()
@@ -101,47 +69,7 @@ class AlertController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-      /**
-     * @OA\Get(
-     *      path="/api/Alerte/{id}",
-     *      operationId="AlertebyId",
-     *      tags={"Alerte"},
 
-     *      summary="Dispositifs par Id",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *@OA\Parameter(
-     *      name="id",
-     *      in="path",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="string"
-     *      )
-     *   ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function show($id)
     {
         $alerte = Alerte::with("incident")->get()->find($id);
