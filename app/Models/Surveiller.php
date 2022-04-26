@@ -34,12 +34,12 @@ class Surveiller extends Model
 		'personne_Affilee'
 	];
 
-	public function personne_affilee()
+	public function Personne_affilee()
 	{
 		return $this->belongsTo(PersonneAffilee::class, 'personne_Affilee');
 	}
 
-	public function personne_vulnerable()
+	public function Personne_vulnerable()
 	{
 		return $this->belongsTo(PersonneVulnerable::class, 'personne_vulnerable');
 	}

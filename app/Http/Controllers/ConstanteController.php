@@ -17,7 +17,7 @@ class ConstanteController extends Controller
     public function index()
     {
         $constante = Constante::with("assigner")->get();
-        if(isEmpty($constante)){
+        if(is_null($constante)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
     }

@@ -51,10 +51,11 @@ class AssignationController extends Controller
      */
     public function index()
     {
-        $assigner =  AssignerResource::collection(Assigner::with('dispositif', 'personne_vulnerable')->get());
-        if(isEmpty($assigner)){
+        $assigner =  Assigner::with('dispositif', 'personne_vulnerable')->get();
+        if(is_null($assigner)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
+         return $assigner;
     }
 
     /**
@@ -95,11 +96,11 @@ class AssignationController extends Controller
      */
     public function show($id)
     {
-        $assigner = Assigner::find($id);
+        $assigner = Assigner::with('dispositif', 'personne_vulnerable')->get()->find($id);
         if (is_null($assigner)) {
             return response()->json(array('status' => 'false','Message' => "Id introuvable"));
         } else {
-            return new AssignerResource($assigner);
+            return $assigner;
         }
     }
 

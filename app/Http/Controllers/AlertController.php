@@ -54,10 +54,12 @@ class AlertController extends Controller
     public function index()
     {
          $alerte = AlerteResource::collection(Alerte::with("incident")->get());
-         if(isEmpty($alerte)){
+         if(is_null($alerte)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
+         return $alerte;
     }
+
 
     public function Count()
     {
@@ -80,7 +82,8 @@ class AlertController extends Controller
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',
-            'exists' => 'Introuvable'
+            'exists' => 'Introuvable',
+            'date'=>'Le formate de la date est incorrecte merci !'
         ]);
         if ($validate->fails()) {
             return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);
