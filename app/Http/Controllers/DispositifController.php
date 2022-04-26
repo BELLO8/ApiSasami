@@ -48,12 +48,13 @@ class DispositifController extends Controller
      */
     public function index()
     {
-         $dispositifs = Dispositif::all();
+        $dispositifs = Dispositif::all();
         if(is_null($dispositifs)){
             return response()->json(array('Message' => " Collection vide !"), 200);
         }else{
             return $dispositifs;
         }
+        return $dispositifs;
         // return DispositifResource::collection(Dispositif::all());
     }
 

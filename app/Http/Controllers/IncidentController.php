@@ -35,7 +35,8 @@ class IncidentController extends Controller
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',
-            'exists' => 'Introuvable'
+            'exists' => 'Introuvable',
+            'date'=>'Le formate de la date est incorrecte merci !'
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);

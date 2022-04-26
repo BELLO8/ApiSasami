@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\ServiceUrgence;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPUnit\Framework\isEmpty;
-
 class ServiceUrgenceController extends Controller
 {
     /**
@@ -18,7 +16,7 @@ class ServiceUrgenceController extends Controller
     public function index()
     {
         $services = ServiceUrgence::with("alerte")->get();
-         if(isEmpty($services)){
+         if(is_null($services)){
             return response()->json(array('Message' => " Collection vide !"), 200);
         }else{
             return $services;
@@ -33,17 +31,20 @@ class ServiceUrgenceController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $input = $request->all();
         $validate = Validator::make($input, [
-        'nom'=> 'required',
-		'adresse'=> 'required',
-		'telephone'=> 'required|max:10',
-		'fixe'=> 'required|max:10',
-		'alerte'=> 'required|exists:alerte,id'
+            'nom' => 'required',
+            'adresse' => 'required',
+            'telephone' => 'required|max:10',
+            'fixe' => 'required|date',
+            'alerte'=>'required|exists:alerte,id'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
-            'max' => 'Le numero de :attribute ne doit pas être superieur à :max chiffres',
-            'exists'=>'id introuvable'
+            'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',
+            'exists' => 'Introuvable',
+            'date'=>'Le formate de la date est incorrecte merci !'
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);
@@ -85,7 +86,23 @@ class ServiceUrgenceController extends Controller
         if(is_null($service)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            if($service->update($request->all())){
+            $input = $request->all();
+            $validate = Validator::make($input, [
+            'nom' => 'required',
+            'adresse' => 'required',
+            'telephone' => 'required|max:10',
+            'fixe' => 'required|date',
+            'alerte'=>'required|exists:alerte,id'
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',
+            'exists' => 'Introuvable',
+            'date'=>'Le formate de la date est incorrecte merci !'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+        }
+            if($service->update($input)){
                 return response()->json(array('Message'=>"Mise a jours effectué avec succès."));
             }else{
                 return response()->json(array('Message'=>"Erreur"));
