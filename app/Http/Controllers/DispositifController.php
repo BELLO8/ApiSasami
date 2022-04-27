@@ -34,20 +34,35 @@ class DispositifController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
+        $length = 2;
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $input = [
+            "ref"=>"DISP".$randomString.rand(8, 3215),
+            "fiche"=>$request->fiche,
+            "numero"=>$request->numero,
+            "date"=>$request->date
+        ];
+
         $validate = Validator::make($input, [
-            'ref' => 'required',
+            // DISPO[0-9]+id_dispositif
+            'ref' => 'required|unique:dispositif',
             'fiche' => 'required',
-            'numero' => 'required|max:10',
+            'numero' => 'required|digits:10|unique:dispositif',
             'date' => 'required|date'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
-            'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres'
+            'digits' => 'Le :attribute doit etre égale à :digits chiffres',
+            'unique'=>'Existe déja !'
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);
         }
-
 
         if (Dispositif::create($input)) {
             return response()->json(array('status' => 'true', 'Message' => "Enregistré avec succès."), 200);
@@ -64,47 +79,6 @@ class DispositifController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-     * @OA\Get(
-     *      path="/api/Dispositifs/{id}",
-     *      operationId="show",
-     *      tags={"Dispositifs"},
-
-     *      summary="La liste des dispositifs",
-     *      description=" ",
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *      ),
-     *@OA\Parameter(
-     *      name="id",
-     *      in="path",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="string"
-     *      )
-     *   ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     * @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     * @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *  )
-     */
     public function show($id)
     {
         if (IsEmpty(Dispositif::find($id))) {
@@ -132,13 +106,15 @@ class DispositifController extends Controller
         } else {
             $input = $request->all();
             $validate = Validator::make($input, [
-                'ref' => 'required',
+                // DISPO[0-9]+id_dispositif
+                'ref' => 'required|unique:dispositif',
                 'fiche' => 'required',
-                'numero' => 'required|max:10',
-                'date' => 'required'
+                'numero' => 'required|digits:10|unique:dispositif',
+                'date' => 'required|date'
             ], $messages = [
                 'required' => ':attribute est un champ obligatoire.',
-                'max' => 'Le :attribute ne doit pas etre superieur à 10 chiffres'
+                'digits' => 'Le :attribute doit etre égale à :digits chiffres',
+                'unique'=>'Existe déja !'
             ]);
             if ($validate->fails()) {
                 return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);
@@ -171,4 +147,5 @@ class DispositifController extends Controller
             }
         }
     }
+
 }

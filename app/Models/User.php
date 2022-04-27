@@ -6,32 +6,35 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class User
- * 
+ *
  * @property int $id
- * @property string|null $username
+ * @property string|null $name
  * @property string|null $email
  * @property string|null $password
- * @property string|null $role
  *
  * @package App\Models
  */
 class User extends Model
 {
+    use HasApiTokens, HasFactory, Notifiable;
 	protected $table = 'users';
-	public $timestamps = false;
+
 
 	protected $hidden = [
-		'password'
-	];
+        'password',
+        'remember_token',
+    ];
 
 	protected $fillable = [
-		'username',
+		'name',
 		'email',
 		'password',
-		'role'
 	];
 }

@@ -12,6 +12,8 @@ use App\Http\Controllers\AlertController;
 use App\Http\Controllers\ServiceUrgenceController;
 use App\Http\Controllers\ConstanteController;
 use App\Http\Controllers\SurveillerController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +26,12 @@ use App\Http\Controllers\SurveillerController;
 |
 */
 
-Route::apiResource('/Dispositifs',DispositifController::class);
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/login', [AuthController::class, 'login']);
+
+
+
 
 Route::apiResource('/Assignations',AssignationController::class);
 
@@ -46,12 +53,14 @@ Route::apiResource('Constante', ConstanteController::class);
 
 Route::apiResource('surveiller',SurveillerController::class);
 
+Route::group(['middleware' => ['auth:sanctum']], function () {
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+    Route::apiResource('/Dispositifs',DispositifController::class);
+    Route::get('/profile', function(Request $request) {
+        return auth()->user();
+    });
+    Route::post('/logout', [AuthController::class, 'logout']);
+    });
 
 // Route::group([
 //     'prefix' => 'v1'
