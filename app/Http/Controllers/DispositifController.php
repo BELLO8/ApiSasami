@@ -81,7 +81,7 @@ class DispositifController extends Controller
 
     public function show($id)
     {
-        if (IsEmpty(Dispositif::find($id))) {
+        if (is_null(Dispositif::find($id))) {
             return response()->json(array('status' => 'false','ID introuvable'));
         } else {
             return Dispositif::find($id);

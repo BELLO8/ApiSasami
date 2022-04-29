@@ -32,12 +32,13 @@ class PersonneVulnerableController extends Controller
             "nom" => 'required|max:255',
             "prenom" => 'required|max:255',
             "adresse" => 'required|max:255',
-            "telephone" => 'required|max:10',
+            "telephone" => 'required|digits:10|unique:personnes_vul',
             "age" => 'required|numeric|between:0,110'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
-            'max' => ':attribute ne doit pas etre superieur à :max chiffres',
-            'between' => ':attribute doit etre entre :min et :max. '
+            'digits' => ':attribute doit  etre egale à :digits chiffres',
+            'between' => ':attribute doit etre entre :min et :max. ',
+            'unique' =>'Existe déja !!'
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);

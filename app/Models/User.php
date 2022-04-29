@@ -15,26 +15,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * Class User
  *
  * @property int $id
- * @property string|null $name
- * @property string|null $email
+ * @property string|null $nom
+ * @property string|null $prenom
+ * @property string|null $adresse
+ * @property string|null $telephone
+ * @property int $age
  * @property string|null $password
  *
  * @package App\Models
  */
+
+
+
 class User extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
-	protected $table = 'users';
 
+    protected $table = 'users';
 
-	protected $hidden = [
+    protected $hidden = [
         'password',
         'remember_token',
     ];
 
-	protected $fillable = [
-		'name',
-		'email',
-		'password',
-	];
+    protected $fillable = [
+        'nom',
+        'prenom',
+        'adresse',
+        'telephone',
+        'age',
+        'password',
+    ];
 }
