@@ -12,12 +12,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Incident
- * 
+ *
  * @property int $id
  * @property string|null $libincident
  * @property int $id_dispositif
  * @property Carbon|null $dates
- * 
+ *
  * @property Dispositif $dispositif
  * @property Collection|Alerte[] $alertes
  *
@@ -42,9 +42,9 @@ class Incident extends Model
 		'dates'
 	];
 
-	public function dispositif()
+	public function Assigner()
 	{
-		return $this->belongsTo(Dispositif::class, 'id_dispositif');
+		return $this->belongsTo(Assigner::class, 'id_assigner');
 	}
 
 	public function alertes()

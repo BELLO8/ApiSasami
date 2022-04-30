@@ -15,8 +15,8 @@ class CreateAssignerTable extends Migration
     {
         Schema::create('assigner', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->integer('frequenceD')->nullable();
-            $table->date('dates')->nullable();
+            $table->integer('freq_enrg')->nullable();
+            $table->timestamp('date');
             $table->integer('id_personneV')->nullable()->index('FK_personneV');
             $table->integer('id_dispositif')->nullable()->index('FK_dispositif');
         });

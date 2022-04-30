@@ -13,12 +13,12 @@ class CreatePersonnesVul extends Migration
      */
     public function up()
     {
-        Schema::create('personnes_vul', function (Blueprint $table) {
+        Schema::create('vulnerable', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nom')->nullable();
             $table->string('prenom')->nullable();
             $table->string('adresse', 25)->nullable();
-            $table->string('telephone', 10)->nullable();
+            $table->smallInteger('telephone');
             $table->integer('age')->nullable();
         });
     }

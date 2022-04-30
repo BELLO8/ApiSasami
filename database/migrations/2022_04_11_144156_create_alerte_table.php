@@ -15,8 +15,8 @@ class CreateAlerteTable extends Migration
     {
         Schema::create('alerte', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->dateTime('date')->nullable();
-            $table->integer('incident')->nullable()->index('fk_incident');
+            $table->timestamp('date');
+            $table->integer('id_incident')->nullable()->index('fk_incident');
         });
     }
 

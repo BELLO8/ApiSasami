@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PersonneVulnerable extends Model
 {
-	protected $table = 'personnes_vul';
+	protected $table = 'vulnerable';
 	public $timestamps = false;
 
 	protected $casts = [

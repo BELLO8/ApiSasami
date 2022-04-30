@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property Carbon|null $date
- * @property int|null $incident
+ * @property int|null $id_incident
  *
  * @property Collection|ServiceUrgence[] $service_urgences
  *
@@ -27,7 +27,7 @@ class Alerte extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'incident' => 'int'
+		'id_incident' => 'int'
 	];
 
 	protected $dates = [
@@ -36,16 +36,16 @@ class Alerte extends Model
 
 	protected $fillable = [
 		'date',
-		'incident'
+		'id_incident'
 	];
 
 	public function Incident()
 	{
-		return $this->belongsTo(Incident::class, 'incident');
+		return $this->belongsTo(Incident::class, 'id_incident');
 	}
 
-	public function service_urgences()
-	{
-		return $this->hasMany(ServiceUrgence::class, 'alerte');
-	}
+    public function ServiceUrgences(){
+        return $this->belongsToMany(ServiceUrgence::class,'alerte_urgences');
+    }
+
 }

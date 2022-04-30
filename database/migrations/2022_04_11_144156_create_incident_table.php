@@ -16,8 +16,8 @@ class CreateIncidentTable extends Migration
         Schema::create('incident', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('libincident')->nullable();
-            $table->integer('id_dispositif')->index('FK_dispositifs');
-            $table->dateTime('dates')->nullable();
+            $table->integer('id_assigner')->index('FK_assigners');
+            $table->timestamp('date');
         });
     }
 

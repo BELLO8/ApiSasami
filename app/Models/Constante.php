@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $nombre_pas
  * @property float|null $frequence_res
  * @property float|null $rythme_card
- * @property Carbon|null $dates
+ * @property Carbon|null $date
  * @property int|null $id_assigner
  *
  * @property Assigner|null $assigner
@@ -46,7 +46,8 @@ class Constante extends Model
 		'nombre_pas',
 		'frequence_res',
 		'rythme_card',
-		'dates',
+        'position',
+		'date',
 		'id_assigner'
 	];
 

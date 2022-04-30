@@ -23,24 +23,26 @@ class Surveiller extends Model
 {
 	protected $table = 'surveiller';
 	public $timestamps = false;
-
+    //public $incrementing = false;
 	protected $casts = [
-		'personne_vulnerable' => 'int',
-		'personne_Affilee' => 'int'
+		'id_personne_vulnerable' => 'int',
+		'id_personne_Affilee' => 'int'
 	];
 
 	protected $fillable = [
-		'personne_vulnerable',
-		'personne_Affilee'
+		'id_personne_vulnerable',
+		'id_personne_Affilee'
 	];
+
+    //protected $primaryKey = ['id_personne_vulnerable','id_personne_Affilee'];
 
 	public function Personne_affilee()
 	{
-		return $this->belongsTo(PersonneAffilee::class, 'personne_Affilee');
+		return $this->belongsTo(PersonneAffilee::class, 'id_personne_Affilee');
 	}
 
 	public function Personne_vulnerable()
 	{
-		return $this->belongsTo(PersonneVulnerable::class, 'personne_vulnerable');
+		return $this->belongsTo(PersonneVulnerable::class, 'id_personne_vulnerable');
 	}
 }

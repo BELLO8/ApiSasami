@@ -15,10 +15,13 @@ class CreateDispositifTable extends Migration
     {
         Schema::create('dispositif', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('ref', 15)->nullable();
-            $table->string('fiche', 100)->nullable();
-            $table->string('numero', 10)->nullable();
-            $table->date('date')->nullable();
+            $table->string('reference', 15)->nullable();
+            $table->text('details', 100)->nullable();
+            $table->smallInteger('telephone');
+            $table->string('Adresse_ip', 46)->nullable();
+            $table->string('status',25)->default('non connecté');
+            $table->timestamp('date');
+
         });
     }
 

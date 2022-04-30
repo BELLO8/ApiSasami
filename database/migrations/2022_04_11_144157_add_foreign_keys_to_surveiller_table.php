@@ -14,8 +14,8 @@ class AddForeignKeysToSurveillerTable extends Migration
     public function up()
     {
         Schema::table('surveiller', function (Blueprint $table) {
-            $table->foreign(['personne_Affilee'], 'fk_personne_Affilee')->references(['id'])->on('personneAffilee');
-            $table->foreign(['personne_vulnerable'], 'fk_personne_vulnerable')->references(['id'])->on('personnes_vul');
+            $table->foreign(['id_personne_Affilee'], 'fk_personne_Affilee')->references(['id'])->on('Affilee');
+            $table->foreign(['id_personne_vulnerable'], 'fk_personne_vulnerable')->references(['id'])->on('vulnerable');
         });
     }
 

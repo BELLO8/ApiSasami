@@ -19,8 +19,8 @@ class CreateProfilingTable extends Migration
             $table->double('nombre_pasM')->nullable();
             $table->double('frequence_resM')->nullable();
             $table->double('rythme_cardM')->nullable();
-            $table->date('dates')->nullable();
-            $table->integer('id_assigner')->nullable()->index('FK_assigners');
+            $table->timestamp('date');
+            $table->integer('id_assigner')->nullable()->index('FK_assign');
         });
     }
 

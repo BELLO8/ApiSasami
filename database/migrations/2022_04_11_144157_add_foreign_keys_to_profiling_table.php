@@ -14,7 +14,7 @@ class AddForeignKeysToProfilingTable extends Migration
     public function up()
     {
         Schema::table('profiling', function (Blueprint $table) {
-            $table->foreign(['id_assigner'], 'FK_assigners')->references(['id'])->on('assigner');
+            $table->foreign(['id_assigner'], 'FK_assign')->references(['id'])->on('assigner');
         });
     }
 

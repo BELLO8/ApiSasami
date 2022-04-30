@@ -14,9 +14,10 @@ class CreateSurveillerTable extends Migration
     public function up()
     {
         Schema::create('surveiller', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->integer('personne_vulnerable')->nullable()->index('fk_personne_vulnerable');
-            $table->integer('personne_Affilee')->nullable()->index('fk_personne_Affilee');
+            $table->increments('id');
+            $table->integer('id_personne_vulnerable')->nullable()->index('fk_personne_vulnerable');
+            $table->integer('id_personne_Affilee')->nullable()->index('fk_personne_Affilee');
+            $table->unique(['id_personne_vulnerable','id_personne_Affilee']);
         });
     }
 

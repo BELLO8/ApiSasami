@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ServiceUrgence extends Model
 {
-	protected $table = 'serviceUrgence';
+	protected $table = 'contact_Urgence';
 	public $timestamps = false;
 
 	protected $casts = [
@@ -34,12 +34,9 @@ class ServiceUrgence extends Model
 		'nom',
 		'adresse',
 		'telephone',
-		'fixe',
-		'alerte'
 	];
 
-	public function alerte()
-	{
-		return $this->belongsTo(Alerte::class, 'alerte');
-	}
+    public function Alertes(){
+        return $this->belongsToMany(Alerte::class,'alerte_urgences');
+    }
 }

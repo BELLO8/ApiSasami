@@ -14,7 +14,7 @@ class AddForeignKeysToIncidentTable extends Migration
     public function up()
     {
         Schema::table('incident', function (Blueprint $table) {
-            $table->foreign(['id_dispositif'], 'FK_dispositifs')->references(['id'])->on('dispositif');
+            $table->foreign(['id_assigner'], 'FK_assigners')->references(['id'])->on('assigner');
         });
     }
 
