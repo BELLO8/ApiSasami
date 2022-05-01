@@ -32,8 +32,8 @@ class SurveillerController extends Controller
     {
         $input = $request->all();
         $validate = Validator::make($input, [
-            'personne_vulnerable'=>'required|exists:personnes_vul,id|unique:surveiller',
-            'personne_Affilee'=>'required|exists:personneAffilee,id|unique:surveiller'
+            'id_personne_vulnerable'=>'required|exists:vulnerable,id|unique:surveiller',
+            'id_personne_Affilee'=>'required|exists:affilee,id|unique:surveiller'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'exists' => 'Introuvable',
@@ -83,8 +83,8 @@ class SurveillerController extends Controller
         }else{
             $input = $request->all();
             $validate = Validator::make($input, [
-            'personne_vulnerable'=>'required|exists:personnes_vul,id',
-            'personne_Affilee'=>'required|exists:personneAffilee,id'
+            'id_personne_vulnerable'=>'required|exists:vulnerable,id',
+            'id_personne_Affilee'=>'required|exists:Affilee,id'
                 ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'exists' => 'Introuvable',

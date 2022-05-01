@@ -15,8 +15,23 @@ class CreateAlerteTable extends Migration
     {
         Schema::create('alerte', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->timestamp('date');
-            $table->integer('id_incident')->nullable()->index('fk_incident');
+            $table->timestamp('date_envoie');
+            $table->integer('id_incident');
+            $table->integer('id_contact_urgence');
+
+            $table->unique(['id_contact_urgence']);
+
+            $table->foreign('id_incident')
+                  ->references('id')
+                  ->on('incident')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+
+            $table->foreign('id_contact_urgence')
+                  ->references('id')
+                  ->on('contact_urgence')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
         });
     }
 

@@ -36,7 +36,9 @@ class Alerte extends Model
 
 	protected $fillable = [
 		'date',
-		'id_incident'
+		'id_incident',
+        'id_contact_urgence',
+        'date_envoie'
 	];
 
 	public function Incident()
@@ -44,8 +46,18 @@ class Alerte extends Model
 		return $this->belongsTo(Incident::class, 'id_incident');
 	}
 
-    public function ServiceUrgences(){
-        return $this->belongsToMany(ServiceUrgence::class,'alerte_urgences');
-    }
+    public function Contact_urgence()
+	{
+		return $this->belongsTo(ServiceUrgence::class, 'id_contact_urgence');
+	}
+
+    // public function ServiceUrgences(){
+    //     return $this->belongsToMany(ServiceUrgence::class,'alerte_urgences');
+    // }
+
+    public function Alerte_urgence()
+	{
+		return $this->hasMany(AlerteUrgence::class, 'id_alerte');
+	}
 
 }

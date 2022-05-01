@@ -11,6 +11,7 @@ class CreatePersonnesVul extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         Schema::create('vulnerable', function (Blueprint $table) {
@@ -18,7 +19,7 @@ class CreatePersonnesVul extends Migration
             $table->string('nom')->nullable();
             $table->string('prenom')->nullable();
             $table->string('adresse', 25)->nullable();
-            $table->smallInteger('telephone');
+            $table->string('telephone',10);
             $table->integer('age')->nullable();
         });
     }

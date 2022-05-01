@@ -4,13 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class AlerteUrgence extends Pivot
+class AlerteUrgence extends Model
 {
     use HasFactory;
 
 	public $timestamps = false;
 
-    public $incrementing = true;
+
+    public function Alertes()
+	{
+		return $this->belongsTo(Alerte::class, 'id_alerte');
+	}
+
+	public function Contact_urgence()
+	{
+		return $this->belongsTo(ServiceUrgence::class, 'id_contact_urgence');
+	}
+
 }

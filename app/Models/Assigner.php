@@ -32,7 +32,7 @@ class Assigner extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'frequenceD' => 'int',
+		'freq_enrg' => 'int',
 		'id_personneV' => 'int',
 		'id_dispositif' => 'int'
 	];
@@ -42,8 +42,8 @@ class Assigner extends Model
 	];
 
 	protected $fillable = [
-		'frequenceD',
-		'dates',
+		'freq_enrg',
+		'date',
 		'id_personneV',
 		'id_dispositif'
 	];

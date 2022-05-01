@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncidentTable extends Migration
+class CreateFicheMedicalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateIncidentTable extends Migration
      */
     public function up()
     {
-        Schema::create('incident', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->string('libincident')->nullable();
-            $table->integer('id_assigner')->index('FK_assigners');
-            $table->timestamp('date_declenchement');
+        Schema::create('fiche_medicales', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +26,6 @@ class CreateIncidentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incident');
+        Schema::dropIfExists('fiche_medicales');
     }
 }

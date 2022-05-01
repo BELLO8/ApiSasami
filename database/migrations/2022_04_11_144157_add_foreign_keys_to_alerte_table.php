@@ -15,6 +15,8 @@ class AddForeignKeysToAlerteTable extends Migration
     {
         Schema::table('alerte', function (Blueprint $table) {
             $table->foreign(['id_incident'], 'fk_incident')->references(['id'])->on('incident');
+            $table->foreign(['id_contact_urgence'], 'fk_c_urgence')->references(['id'])->on('contact_urgence');
+
         });
     }
 

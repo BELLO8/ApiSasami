@@ -9,7 +9,6 @@ use App\Http\Requests\AlertRequest;
 use App\Http\Resources\AlerteResource;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPUnit\Framework\isEmpty;
 
 class AlertController extends Controller
 {
@@ -27,11 +26,10 @@ class AlertController extends Controller
          return $alerte;
     }
 
-
     public function Count()
     {
         return response()->json([
-            "nombre d'alerte"=>Alerte::with("incident")->get()->count()
+            "nombre d'alerte"=>Alerte::get()->count()
         ]);
     }
     /**
@@ -44,8 +42,9 @@ class AlertController extends Controller
     {
         $input = $request->all();
         $validate = Validator::make($input, [
-            'date'=>'required|max:255',
-            'incident'=>'required|exists:incident,id'
+            'date_envoie'=>'required|max:255',
+            'id_incident'=>'required|exists:incident,id',
+            'id_contact_urgence'=>'required|exists:contact_urgence,id'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',
@@ -97,12 +96,14 @@ class AlertController extends Controller
         }else{
             $input = $request->all();
             $validate = Validator::make($input, [
-                'date'=>'required|max:255',
-                'incident'=>'required|exists:incident,id'
+                'date_envoie'=>'required|max:255',
+                'id_incident'=>'required|exists:incident,id',
+                'id_contact_urgence'=>'required|exists:contact_urgence,id'
             ], $messages = [
                 'required' => ':attribute est un champ obligatoire.',
                 'max' => ':attribute ne doit pas etre superieur à :max chiffres',
-                'exists' => 'Introuvable'
+                'exists' => 'Introuvable',
+                'date'=>'Le formate de la date est incorrecte merci !'
             ]);
             if ($validate->fails()) {
                 return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);

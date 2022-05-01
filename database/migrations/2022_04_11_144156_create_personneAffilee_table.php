@@ -13,12 +13,12 @@ class CreatePersonneAffileeTable extends Migration
      */
     public function up()
     {
-        Schema::create('Affilee', function (Blueprint $table) {
+        Schema::create('affilee', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nom')->nullable();
             $table->string('prenom')->nullable();
             $table->string('adresse', 25)->nullable();
-            $table->smallInteger('telephone');
+            $table->string('telephone',10);
             $table->integer('age')->nullable();
         });
     }

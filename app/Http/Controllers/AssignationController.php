@@ -18,7 +18,7 @@ class AssignationController extends Controller
      */
     public function index()
     {
-        $assigner =  Assigner::with('dispositif', 'personne_vulnerable')->get();
+        $assigner =  AssignerResource::collection(Assigner::with('dispositif', 'personne_vulnerable')->get());
         if(is_null($assigner)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
@@ -34,9 +34,9 @@ class AssignationController extends Controller
     {
         $input = $request->all();
         $validate = Validator::make($input, [
-            'frequenceD' => 'required|max:255',
-            'dates' => 'required',
-            'id_personneV' => 'required|exists:personnes_vul,id',
+            'freq_enrg' => 'required|max:255',
+            'date' => 'required',
+            'id_personneV' => 'required|exists:vulnerable,id',
             'id_dispositif' => 'required|exists:dispositif,id'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
@@ -63,7 +63,7 @@ class AssignationController extends Controller
         if (is_null($assigner)) {
             return response()->json(array('status' => 'false','Message' => "Id introuvable"));
         } else {
-            return $assigner;
+            return new AssignerResource($assigner) ;
         }
     }
 
@@ -82,8 +82,8 @@ class AssignationController extends Controller
         } else {
             $input = $request->all();
             $validate = Validator::make($input, [
-                'frequenceD' => 'required|max:255',
-                'dates' => 'required',
+                'freq_enrg' => 'required|max:255',
+                'date' => 'required',
                 'id_personneV' => 'required|exists:personneVulnerable,id',
                 'id_dispositif' => 'required|exists:dispositif,id'
             ], $messages = [

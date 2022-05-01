@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\DispositifResource;
 use App\Models\Dispositif;
 use Illuminate\Support\Facades\Validator;
-use PHPUnit\Framework\Constraint\IsEmpty;
 
-use function PHPUnit\Framework\isEmpty;
 
 class DispositifController extends Controller
 {
@@ -17,12 +15,12 @@ class DispositifController extends Controller
     public function index()
     {
         $dispositifs = Dispositif::all();
-        if(is_null($dispositifs)){
+        if(is_null($dispositifs) === true){
             return response()->json(array('Message' => " Collection vide !"), 200);
         }else{
             return $dispositifs;
         }
-        return $dispositifs;
+
         // return DispositifResource::collection(Dispositif::all());
     }
     /**
@@ -33,6 +31,7 @@ class DispositifController extends Controller
      */
     public function store(Request $request)
     {
+
         $length = 2;
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -42,17 +41,21 @@ class DispositifController extends Controller
         }
 
         $input = [
-            "ref"=>"DISP".$randomString.rand(8, 3215),
-            "fiche"=>$request->fiche,
-            "numero"=>$request->numero,
+            "reference"=>"DISP".$randomString.rand(8, 3215),
+            "details"=>$request->details,
+            "telephone"=>$request->telephone,
+            "Adresse_ip"=>$request->Adresse_ip,
+            "status"=>$request->status,
             "date"=>$request->date
         ];
 
         $validate = Validator::make($input, [
             // DISPO[0-9]+id_dispositif
-            'ref' => 'required|unique:dispositif',
-            'fiche' => 'required',
-            'numero' => 'required|digits:10|unique:dispositif',
+            'reference' => 'required|unique:dispositif',
+            'details' => 'required',
+            'telephone' => 'required|digits:10|unique:dispositif',
+            'Adresse_ip' => 'required|min:10|unique:dispositif',
+            'status' => 'required|',
             'date' => 'required|date'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
@@ -80,7 +83,7 @@ class DispositifController extends Controller
 
     public function show($id)
     {
-        if (IsEmpty(Dispositif::find($id))) {
+        if (is_null(Dispositif::find($id))) {
             return response()->json(array('status' => 'false','ID introuvable'));
         } else {
             return Dispositif::find($id);
@@ -104,10 +107,12 @@ class DispositifController extends Controller
         } else {
             $input = $request->all();
             $validate = Validator::make($input, [
-                // DISPO[0-9]+id_dispositif
-                'ref' => 'required|unique:dispositif',
-                'fiche' => 'required',
-                'numero' => 'required|digits:10|unique:dispositif',
+
+                'reference' => 'required|unique:dispositif',
+                'details' => 'required',
+                'telephone' => 'required|digits:10|unique:dispositif',
+                'Adresse_ip' => 'required|min:10|unique:dispositif',
+                'status' => 'required|',
                 'date' => 'required|date'
             ], $messages = [
                 'required' => ':attribute est un champ obligatoire.',

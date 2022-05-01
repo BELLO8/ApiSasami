@@ -43,6 +43,7 @@ class User extends Model
         'adresse',
         'telephone',
         'age',
+        'role',
         'password',
     ];
 }

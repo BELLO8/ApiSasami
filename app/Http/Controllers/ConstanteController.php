@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Constante;
+use Illuminate\Http\Request;
 
 use function PHPUnit\Framework\isEmpty;
+use App\Http\Resources\ConstantResource;
 
 class ConstanteController extends Controller
 {
@@ -16,7 +17,7 @@ class ConstanteController extends Controller
      */
     public function index()
     {
-        $constante = Constante::with("assigner")->get();
+        $constante = ConstantResource::collection(Constante::with("assigner")->get());
         if(is_null($constante)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
@@ -48,11 +49,11 @@ class ConstanteController extends Controller
      */
     public function show($id)
     {
-
+        $constant = Constante::with("assigner")->get()->find($id);
         if (is_null(Constante::find($id))) {
             return response()->json(array('ID incorrect'));
         } else {
-            return Constante::find($id)->with("assigner")->get();
+            return new ConstantResource($constant);
         }
         //
     }

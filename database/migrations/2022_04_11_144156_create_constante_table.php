@@ -19,7 +19,7 @@ class CreateConstanteTable extends Migration
             $table->double('nombre_pas')->nullable();
             $table->double('frequence_res')->nullable();
             $table->double('rythme_card')->nullable();
-            $table->text('positions')->nullable();
+            $table->text('coordonnee_geographique')->nullable();
             $table->timestamp('date');
             $table->integer('id_assigner')->nullable()->index('FK_assigner');
 

@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PersonneAffilee extends Model
 {
-	protected $table = 'Affilee';
+	protected $table = 'affilee';
 	public $timestamps = false;
 
 	protected $casts = [
@@ -42,6 +42,6 @@ class PersonneAffilee extends Model
 
 	public function surveillers()
 	{
-		return $this->hasMany(Surveiller::class, 'personne_Affilee');
+		return $this->hasMany(Surveiller::class, 'id_personne_Affilee');
 	}
 }

@@ -20,15 +20,15 @@ class SurveilleResource extends JsonResource
                 "personne_vulnerable"=> [
                     'nom'=>$this->Personne_vulnerable->nom,
                     'prenom'=>$this->Personne_vulnerable->prenom,
-                    'adresse'=>$this->Personne_vulnerable->adrersse,
+                    'adresse'=>$this->Personne_vulnerable->adresse,
                     'telephone'=>$this->Personne_vulnerable->telephone,
                     'age'=>$this->Personne_vulnerable->age
                 ],
-                "Surveiller par" =>[
+                "Suivis par" =>[
                     "personne_Affilee"=>[
                         'nom'=>$this->Personne_affilee->nom,
                         'prenom'=>$this->Personne_affilee->prenom,
-                        'adresse'=>$this->Personne_vulnerable->adrersse,
+                        'adresse'=>$this->Personne_vulnerable->adresse,
                         'telephone'=>$this->Personne_affilee->telephone,
                         'age'=>$this->Personne_affilee->age
                         ]

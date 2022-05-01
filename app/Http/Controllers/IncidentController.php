@@ -16,7 +16,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        return IncidentResource::collection(Incident::with("dispositif")->get());
+        return IncidentResource::collection(Incident::with("Assigner")->get());
     }
 
     /**
@@ -30,8 +30,8 @@ class IncidentController extends Controller
         $input = $request->all();
         $validate = Validator::make($input, [
             'libincident'=>'required|max:255',
-		    'id_dispositif'=>'required|exists:dispositif,id',
-		    'dates'=>'required|date'
+		    'id_assigner'=>'required|exists:assigner,id',
+		    'date_declenchement'=>'required|date'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',
@@ -81,8 +81,8 @@ class IncidentController extends Controller
             $input = $request->all();
             $validate = Validator::make($input, [
                 'libincident'=>'required|max:255',
-                'id_dispositif'=>'required|exists:dispositif,id',
-                'dates'=>'required|date'
+                'id_assigner'=>'required|exists:assigner,id',
+                'date_declenchement'=>'required|date'
             ], $messages = [
                 'required' => ':attribute est un champ obligatoire.',
                 'max' => ':attribute ne doit pas etre superieur à :max chiffres',

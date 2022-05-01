@@ -29,17 +29,17 @@ class Incident extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'id_dispositif' => 'int'
+		'id_assigner' => 'int'
 	];
 
 	protected $dates = [
-		'dates'
+		'date_declenchement'
 	];
 
 	protected $fillable = [
 		'libincident',
-		'id_dispositif',
-		'dates'
+		'id_assigner',
+		'date_declenchement'
 	];
 
 	public function Assigner()
@@ -49,6 +49,7 @@ class Incident extends Model
 
 	public function alertes()
 	{
-		return $this->hasMany(Alerte::class, 'incident');
+		return $this->hasMany(Alerte::class, 'id_incident');
 	}
+
 }

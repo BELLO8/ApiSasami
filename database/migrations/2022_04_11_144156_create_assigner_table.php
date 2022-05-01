@@ -18,7 +18,8 @@ class CreateAssignerTable extends Migration
             $table->integer('freq_enrg')->nullable();
             $table->timestamp('date');
             $table->integer('id_personneV')->nullable()->index('FK_personneV');
-            $table->integer('id_dispositif')->nullable()->index('FK_dispositif');
+            $table->integer('id_dispositif')->nullable()->index('FK_dispositif')->unique();
+            $table->unique(['id_personneV','id_dispositif']);
         });
     }
 

@@ -48,6 +48,6 @@ class PersonneVulnerable extends Model
 
 	public function surveillers()
 	{
-		return $this->hasMany(Surveiller::class, 'personne_vulnerable');
+		return $this->hasMany(Surveiller::class, 'id_personne_vulnerable');
 	}
 }

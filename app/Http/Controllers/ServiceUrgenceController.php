@@ -15,7 +15,7 @@ class ServiceUrgenceController extends Controller
      */
     public function index()
     {
-        $services = ServiceUrgence::with("alerte")->get();
+        $services = ServiceUrgence::get();
          if(is_null($services)){
             return response()->json(array('Message' => " Collection vide !"), 200);
         }else{
@@ -39,7 +39,7 @@ class ServiceUrgenceController extends Controller
             'adresse' => 'required',
             'telephone' => 'required|max:10',
             'fixe' => 'required|date',
-            'alerte'=>'required|exists:alerte,id'
+
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',
@@ -68,7 +68,7 @@ class ServiceUrgenceController extends Controller
         if(is_null($service)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            return $service::with("alerte")->get();
+            return $service::get();
         }
     }
 
@@ -92,7 +92,6 @@ class ServiceUrgenceController extends Controller
             'adresse' => 'required',
             'telephone' => 'required|max:10',
             'fixe' => 'required|date',
-            'alerte'=>'required|exists:alerte,id'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',

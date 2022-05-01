@@ -13,11 +13,11 @@ class CreateServiceUrgenceTable extends Migration
      */
     public function up()
     {
-        Schema::create('contact_Urgence', function (Blueprint $table) {
+        Schema::create('contact_urgence', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nom')->nullable();
             $table->string('adresse')->nullable();
-            $table->smallInteger('telephone');
+            $table->string('telephone',10);
         });
     }
 

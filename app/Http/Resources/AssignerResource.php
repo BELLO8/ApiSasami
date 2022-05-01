@@ -16,17 +16,17 @@ class AssignerResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'frequenceD'=>$this->frequenceD,
-            'dates'=>$this->dates,
+            'freq_enrg'=>$this->freq_enrg .' sec',
+            'date'=>$this->date,
             'Dispositif'=>[
-                'id'=>$this->dispositif->id,
-                'reference'=>$this->dispositif->ref,
-                'fiche'=>$this->dispositif->fiche,
-                'numero de telephone'=>$this->dispositif->numero,
+                'reference'=>$this->dispositif->reference,
+                'details'=>$this->dispositif->details,
+                'telephone'=>$this->dispositif->telephone,
+                'Adresse_ip'=>$this->dispositif->Adresse_ip,
+                'status'=>$this->dispositif->status,
                 'date'=>$this->dispositif->date,
               ],
             'personne_vulnerable'=>[
-                'id'=>$this->personne_vulnerable->id,
                 'nom'=>$this->personne_vulnerable->nom,
                 'prenom'=>$this->personne_vulnerable->prenom,
                 'adresse'=>$this->personne_vulnerable->adresse,
