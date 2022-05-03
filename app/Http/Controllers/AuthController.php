@@ -29,7 +29,7 @@ class AuthController extends Controller
             'between' => ':attribute doit etre entre :min et :max. ',
             'unique'=>'existe déja !'
         ]);
-          
+
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }elseif($request->role === "vulnérable"){
@@ -42,7 +42,7 @@ class AuthController extends Controller
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
-    
+
              PersonneVulnerable::create([
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
@@ -60,7 +60,7 @@ class AuthController extends Controller
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
-    
+
              PersonneAffilee::create([
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
@@ -74,8 +74,6 @@ class AuthController extends Controller
             ], 401);
         }
 
-        
-
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()
@@ -88,7 +86,7 @@ class AuthController extends Controller
             'telephone' => 'required|string',
             'password' => 'required|string'
         ]);
-        
+
         $user = User::where('telephone', $fields['telephone'])->first();
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([

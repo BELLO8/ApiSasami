@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Validator;
 class DispositifController extends Controller
 {
 
+    public function Count()
+    {
+        return response()->json([
+            " Nombre de dispositif "=>Dispositif::get()->count()
+        ]);
+    }
 
     public function index()
     {

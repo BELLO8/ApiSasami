@@ -24,7 +24,7 @@ class AssignerResource extends JsonResource
                 'telephone'=>$this->dispositif->telephone,
                 'Adresse_ip'=>$this->dispositif->Adresse_ip,
                 'status'=>$this->dispositif->status,
-                'date'=>$this->dispositif->date,
+                'date'=>date($this->dispositif->date),
               ],
             'personne_vulnerable'=>[
                 'nom'=>$this->personne_vulnerable->nom,

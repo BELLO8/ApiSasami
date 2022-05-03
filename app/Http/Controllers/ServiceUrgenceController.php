@@ -23,6 +23,13 @@ class ServiceUrgenceController extends Controller
         }
     }
 
+    public function Count()
+    {
+        return response()->json([
+            " Nombre de service Urgence "=>ServiceUrgence::get()->count()
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -26,9 +26,9 @@ class AlerteResource extends JsonResource
                 'telephone' => $this->Incident->assigner->dispositif->telephone,
                 'Adresse_ip' => $this->Incident->assigner->dispositif->Adresse_ip,
                 'status' => $this->Incident->assigner->dispositif->status,
-            ], 
+            ],
             'personne' => SurveilleResource::collection($this->Incident->assigner->personne_vulnerable->surveillers),
-                
+
             'constantes' => $this->Incident->assigner->constantes,
         ];
     }

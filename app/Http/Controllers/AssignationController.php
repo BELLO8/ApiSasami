@@ -37,14 +37,17 @@ class AssignationController extends Controller
             'freq_enrg' => 'required|max:255',
             'date' => 'required',
             'id_personneV' => 'required|exists:vulnerable,id',
-            'id_dispositif' => 'required|exists:dispositif,id'
+            'id_dispositif' => 'required|exists:dispositif,id|unique:assigner',
+
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
-            'exists' => 'Introuvable'
+            'exists' => 'Introuvable',
+            'unique'=> 'Déja assigner à une personne vulnerable'
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);
         }
+
         if (Assigner::create($input)) {
             return response()->json(array('status' => 'true','Message' => "Assigner avec succès  merci!"), 200);
         } else {

@@ -19,6 +19,13 @@ class IncidentController extends Controller
         return IncidentResource::collection(Incident::with("Assigner")->get());
     }
 
+    public function Count()
+    {
+        return response()->json([
+            " Nombre d'incident "=>Incident::get()->count()
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

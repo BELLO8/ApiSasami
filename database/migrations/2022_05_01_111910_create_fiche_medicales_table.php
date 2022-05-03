@@ -15,7 +15,20 @@ class CreateFicheMedicalesTable extends Migration
     {
         Schema::create('fiche_medicales', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->integer('id_personne_vulnerable');
+            $table->integer('poids');
+            $table->integer('taille');
+            $table->text('probleme_medicale');
+            $table->text('traitement');
+            $table->string('groupe_sanguin');
+            $table->string('contact_personne_proche');
+
+            $table->foreign('id_personne_vulnerable')
+                  ->references('id')
+                  ->on('vulnerable')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+
         });
     }
 

@@ -50,4 +50,9 @@ class PersonneVulnerable extends Model
 	{
 		return $this->hasMany(Surveiller::class, 'id_personne_vulnerable');
 	}
+
+    public function FicheMedicales()
+	{
+		return $this->hasOne(FicheMedicale::class, 'id_personne_vulnerable');
+	}
 }

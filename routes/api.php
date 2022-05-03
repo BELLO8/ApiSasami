@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\FicheController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\ConstanteController;
 use App\Http\Controllers\DispositifController;
@@ -31,7 +32,6 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-
 Route::apiResource('/Assignations', AssignationController::class);
 
 Route::apiResource('/PersonnesVulnerales', PersonneVulnerableController::class);
@@ -46,11 +46,69 @@ Route::apiResource('/Profilling', ProfillingController::class);
 
 Route::apiResource('/ServiceUrgences', ServiceUrgenceController::class);
 
+//counters
 Route::get("/NombreAlerte", [AlertController::class, "count"]);
+
+Route::get("/NombreDispositif", [DispositifController::class, "count"]);
+
+Route::get("/NombreService", [ServiceUrgenceController::class, "count"]);
+
+Route::get("/NombreIncident", [IncidentController::class, "count"]);
+//
+Route::apiResource('MaFiche', FicheController::class);
 
 Route::apiResource('Constante', ConstanteController::class);
 
 Route::apiResource('Surveiller', SurveillerController::class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -61,6 +119,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
+
+
 //personne vulnerable
 Route::group([
     'middleware' => ['IsVulnerable','auth:sanctum']
@@ -70,6 +131,9 @@ Route::group([
     });
   });
 
+
+
+
 //personne affiliée
 Route::group([
     'middleware' => ['IsAffiliee','auth:sanctum']
@@ -78,6 +142,10 @@ Route::group([
         return auth()->user();
     });
   });
+
+
+
+
 
   //Administrateur
   Route::group([
