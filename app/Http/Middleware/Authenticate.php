@@ -18,4 +18,5 @@ class Authenticate extends Middleware
             abort(response()->json(['message' => 'pas connecté !!']));
         }
     }
+
 }

@@ -26,11 +26,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @package App\Models
  */
+
+
+
 class User extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'users';
 
+    protected $table = 'users';
 
     protected $hidden = [
         'password',
