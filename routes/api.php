@@ -28,9 +28,7 @@ use App\Http\Controllers\PersonneVulnerableController;
 |
 */
 
-Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResource('/Assignations', AssignationController::class);
 
@@ -62,76 +60,41 @@ Route::apiResource('Constante', ConstanteController::class);
 Route::apiResource('Surveiller', SurveillerController::class);
 
 
+Route::apiResource('/Dispositifs', DispositifController::class);
+
+
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/UserRegister', [AuthController::class, 'UserRegister']);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/profile', function (Request $request) {
-        return auth()->user();
+//service urgences
+Route::group([
+    'middleware' => ['auth:sanctum', 'IsService']
+  ], function(){
+    Route::get('/profileServiceUrgence', function (Request $request) {
+        if(Auth::user()->role =='vulnérable'){
+            return auth()->user();
+        }
     });
-
     Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-
-
+  });
 
 //personne vulnerable
 Route::group([
     'middleware' => ['IsVulnerable','auth:sanctum']
   ], function(){
     Route::get('/profileVulnerable', function (Request $request) {
-        return auth()->user();
+        if(Auth::user()->role =='vulnérable'){
+            return auth()->user();
+        }
     });
+
+    Route::post('/logout', [AuthController::class, 'logout']);
   });
-
-
 
 
 //personne affiliée
@@ -139,22 +102,23 @@ Route::group([
     'middleware' => ['IsAffiliee','auth:sanctum']
   ], function(){
     Route::get('/profileAffiliee', function (Request $request) {
-        return auth()->user();
+        if(Auth::user()->role =='affiliée'){
+            return auth()->user();
+        }
     });
+    Route::post('/logout', [AuthController::class, 'logout']);
   });
-
-
-
-
 
   //Administrateur
   Route::group([
     'middleware' => ['IsAdmin','auth:sanctum']
   ], function(){
 
-    Route::apiResource('/Dispositifs', DispositifController::class);
-
     Route::get('/profileAdmin', function (Request $request) {
-        return auth()->user();
+        if(Auth::user()->role =='admin'){
+            return auth()->user();
+        }
     });
+
+    Route::post('/logout', [AuthController::class, 'logout']);
   });

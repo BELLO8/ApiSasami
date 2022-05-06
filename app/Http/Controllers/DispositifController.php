@@ -14,7 +14,7 @@ class DispositifController extends Controller
     public function Count()
     {
         return response()->json([
-            " Nombre de dispositif "=>Dispositif::get()->count()
+            "nombre"=>Dispositif::get()->count()
         ]);
     }
 

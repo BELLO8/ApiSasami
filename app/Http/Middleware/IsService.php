@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class IsAdmin
+class IsService
 {
     /**
      * Handle an incoming request.
@@ -17,10 +16,10 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->tokenCan('role:admin')){
+        if (auth()->user()->tokenCan('role:service_urgences')) {
             return $next($request);
         }else{
-            abort(response()->json(['message' => 'pas autorisé car vous n\'êtes pas un administrateur !!']));
+            abort(response()->json(['message' => 'pas autorisé car vous n\'êtes pas un service d\'urgences  !!']));
         }
     }
 }

@@ -15,27 +15,17 @@ class SurveilleResource extends JsonResource
     public function toArray($request)
     {
         return [
-
-                "id"=>$this->id,
-                "personne_vulnerable"=> [
-                    'nom'=>$this->Personne_vulnerable->nom,
-                    'prenom'=>$this->Personne_vulnerable->prenom,
-                    'adresse'=>$this->Personne_vulnerable->adresse,
-                    'telephone'=>$this->Personne_vulnerable->telephone,
-                    'age'=>$this->Personne_vulnerable->age
-                ],
-                "Suivis par" =>[
-                    "personne_Affilee"=>[
-                        'nom'=>$this->Personne_affilee->nom,
-                        'prenom'=>$this->Personne_affilee->prenom,
-                        'adresse'=>$this->Personne_vulnerable->adresse,
-                        'telephone'=>$this->Personne_affilee->telephone,
-                        'age'=>$this->Personne_affilee->age
-                        ]
-                ]
-
-
-
+            "id" => $this->id,
+            'nom_vulnerable' => $this->Personne_vulnerable->nom,
+            'prenom_vulnerable' => $this->Personne_vulnerable->prenom,
+            'adresse_vulnerable' => $this->Personne_vulnerable->adresse,
+            'telephone_vulnerable' => $this->Personne_vulnerable->telephone,
+            'age_vulnerable' => $this->Personne_vulnerable->age,
+            'nom_affiliee' => $this->Personne_affilee->nom,
+            'prenom_affiliee' => $this->Personne_affilee->prenom,
+            'adresse_affiliee' => $this->Personne_vulnerable->adresse,
+            'telephone_affiliee' => $this->Personne_affilee->telephone,
+            'age_affiliee' => $this->Personne_affilee->age
         ];
     }
 }

@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         'IsVulnerable' => \App\Http\Middleware\IsVulnerable::class,
         'IsAffiliee' => \App\Http\Middleware\IsAffiliee::class,
         'IsAdmin' => \App\Http\Middleware\IsAdmin::class,
+        'IsService' => \App\Http\Middleware\IsService::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

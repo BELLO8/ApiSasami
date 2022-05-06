@@ -27,48 +27,43 @@ class AuthController extends Controller
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',
             'between' => ':attribute doit etre entre :min et :max. ',
-            'unique'=>'existe déja !'
+            'unique' => 'existe déja !'
         ]);
-
         if ($validator->fails()) {
             return response()->json($validator->errors());
-        }elseif($request->role === "vulnérable"){
+        } elseif ($request->role === "vulnerable") {
             $user = User::create([
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
-                'adresse' => $request->adresse,
                 'telephone' => $request->telephone,
-                'age' => $request->age,
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
 
-             PersonneVulnerable::create([
+            PersonneVulnerable::create([
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
                 'adresse' => $request->adresse,
                 'telephone' => $request->telephone,
                 'age' => $request->age,
             ]);
-        }elseif($request->role === "affiliée"){
+        } elseif ($request->role === "affiliee") {
             $user = User::create([
                 'nom' => $request->nom,
-                'prenom' => $request->prenom,
                 'adresse' => $request->adresse,
                 'telephone' => $request->telephone,
-                'age' => $request->age,
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
 
-             PersonneAffilee::create([
+            PersonneAffilee::create([
                 'nom' => $request->nom,
                 'prenom' => $request->prenom,
                 'adresse' => $request->adresse,
                 'telephone' => $request->telephone,
                 'age' => $request->age,
             ]);
-        }else{
+        } else {
             return response([
                 'message' => 'Erreur !!'
             ], 401);
@@ -76,15 +71,25 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        $response = [
+            "id" => $user->id,
+            "nom" => $user->nom,
+            "telephone" => $user->telephone,
+            "role" => $user->role,
+            'token' => $token
+        ];
+
         return response()
-            ->json(['data' => $user, 'access_token' => $token, 'token_type' => 'Bearer',]);
+            ->json($response);
     }
 
     public function login(Request $request)
     {
         $fields = $request->validate([
-            'telephone' => 'required|string',
+            'telephone' => 'required|string|digits:10',
             'password' => 'required|string'
+        ], [
+            'digits' => ':attribute doit etre egale à 10 chiffres'
         ]);
 
         $user = User::where('telephone', $fields['telephone'])->first();
@@ -97,12 +102,15 @@ class AuthController extends Controller
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
-            'user' => $user,
+            "id" => $user->id,
+            "nom" => $user->nom,
+            "telephone" => $user->telephone,
+            "role" => $user->role,
             'token' => $token
         ];
 
         return response()
-            ->json(['message' => 'Salut ' . $user->nom . ', Bienvenue ', 'access_token' => $token, 'token_type' => 'Bearer',]);
+            ->json($response);
     }
 
     // method for user logout and delete token
@@ -112,5 +120,49 @@ class AuthController extends Controller
         return [
             'message' => 'Deconnecté'
         ];
+    }
+
+    public function UserRegister(Request $request)
+    {
+
+        if ($request->role === "admin" || $request->role === "service_urgences" ) {
+            $validator = Validator::make($request->all(), [
+                'nom' => 'required|string|max:255',
+                'telephone' => 'required|digits:10|unique:users',
+                'role' => 'required|string|max:255',
+                'password' => 'required|string|min:8',
+            ], $messages = [
+                'required' => ':attribute est un champ obligatoire.',
+                'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+                'between' => ':attribute doit etre entre :min et :max. ',
+                'unique' => 'existe déja !'
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
+            }
+
+            $user = User::create([
+                'nom' => $request->nom,
+                'telephone' => $request->telephone,
+                'role' => $request->role,
+                'password' => Hash::make($request->password)
+            ]);
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            $response = [
+                "id" => $user->id,
+                "nom" => $user->nom,
+                "telephone" => $user->telephone,
+                "role" => $user->role,
+                'token' => $token
+            ];
+
+            return response()
+                ->json($response);
+        }else{
+            return response([
+                'message' => 'Erreur !! le role doit être admin ou service_urgences'
+            ], 401);
+        }
     }
 }

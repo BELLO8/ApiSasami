@@ -26,7 +26,7 @@ class ServiceUrgenceController extends Controller
     public function Count()
     {
         return response()->json([
-            " Nombre de service Urgence "=>ServiceUrgence::get()->count()
+            "nombre"=>ServiceUrgence::get()->count()
         ]);
     }
 
@@ -39,19 +39,16 @@ class ServiceUrgenceController extends Controller
     public function store(Request $request)
     {
 
-
         $input = $request->all();
         $validate = Validator::make($input, [
             'nom' => 'required',
             'adresse' => 'required',
             'telephone' => 'required|max:10',
-            'fixe' => 'required|date',
-
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',
             'exists' => 'Introuvable',
-            'date'=>'Le formate de la date est incorrecte merci !'
+
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);
@@ -98,12 +95,12 @@ class ServiceUrgenceController extends Controller
             'nom' => 'required',
             'adresse' => 'required',
             'telephone' => 'required|max:10',
-            'fixe' => 'required|date',
+
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',
             'exists' => 'Introuvable',
-            'date'=>'Le formate de la date est incorrecte merci !'
+
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);

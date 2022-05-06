@@ -22,7 +22,7 @@ class IncidentController extends Controller
     public function Count()
     {
         return response()->json([
-            " Nombre d'incident "=>Incident::get()->count()
+            "nombre"=>Incident::get()->count()
         ]);
     }
 

@@ -21,7 +21,7 @@ class CreateAlerteTable extends Migration
 
             $table->unique(['id_contact_urgence']);
 
-            $table->foreign('id_incident')
+            $table->foreign('id_incident',)
                   ->references('id')
                   ->on('incident')
                   ->onUpdate('cascade')

@@ -29,7 +29,7 @@ class AlertController extends Controller
     public function Count()
     {
         return response()->json([
-            "nombre d'alerte"=>Alerte::get()->count()
+            "nombre"=>Alerte::get()->count()
         ]);
     }
     /**
