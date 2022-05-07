@@ -16,10 +16,10 @@ class IsVulnerable
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
 
-    
+
     public function handle(Request $request, Closure $next)
     {
-        if( Auth::check() && Auth::user()->role =='vulnérable'){
+        if( auth()->user()->tokenCan('role:vulnérable')){
             return $next($request);
         }else{
             abort(response()->json(['message' => 'pas autorisé car vous n\'êtes pas un personne vulnerable !!']));
