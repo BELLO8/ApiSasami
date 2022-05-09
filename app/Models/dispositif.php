@@ -12,13 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Dispositif
- *
+ * 
  * @property int $id
  * @property string|null $ref
  * @property string|null $fiche
  * @property string|null $numero
  * @property Carbon|null $date
- *
+ * 
  * @property Collection|Assigner[] $assigners
  * @property Collection|Incident[] $incidents
  *
@@ -34,11 +34,9 @@ class Dispositif extends Model
 	];
 
 	protected $fillable = [
-        'reference',
-        'details',
-        'telephone',
-        'Adresse_ip',
-        'status',
+		'ref',
+		'fiche',
+		'numero',
 		'date'
 	];
 
