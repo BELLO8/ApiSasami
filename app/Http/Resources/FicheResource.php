@@ -16,7 +16,7 @@ class FicheResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "id_personne_vulnerable" => $this->Personne_vulnerable,
+            "personne_vulnerable" => $this->Personne_vulnerable,
             "poids" => $this->poids,
             "taille" => $this->taille,
             "probleme_medicale" => $this->probleme_medicale,
