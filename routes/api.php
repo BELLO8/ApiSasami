@@ -93,6 +93,12 @@ Route::group([
         }
     });
 
+    Route::get('ficheMedicale', [FicheController::class,'show']);
+
+    Route::post('AddFiche', [FicheController::class,'store']);
+
+    Route::put('AddFiche/{id}', [FicheController::class,'update']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
   });
 
