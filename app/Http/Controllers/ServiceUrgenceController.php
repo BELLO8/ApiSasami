@@ -43,11 +43,12 @@ class ServiceUrgenceController extends Controller
         $validate = Validator::make($input, [
             'nom' => 'required',
             'adresse' => 'required',
-            'telephone' => 'required|max:10',
+            'telephone' => 'required',
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => 'Le :attribute ne doit pas etre superieur à :max chiffres',
             'exists' => 'Introuvable',
+            'digits' => 'Le :attribute doit etre égale à :digits chiffres',
 
         ]);
         if ($validate->fails()) {

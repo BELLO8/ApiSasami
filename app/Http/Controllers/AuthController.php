@@ -34,7 +34,6 @@ class AuthController extends Controller
         } elseif ($request->role === "vulnerable") {
             $user = User::create([
                 'nom' => $request->nom,
-                'prenom' => $request->prenom,
                 'telephone' => $request->telephone,
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
@@ -122,10 +121,20 @@ class AuthController extends Controller
         ];
     }
 
+    public function getUsers()
+    {
+        $user = User::all();
+        if (is_null($user) === true) {
+            return response()->json(array('Message' => " Collection vide !"), 200);
+        } else {
+            return $user;
+        }
+    }
+
     public function UserRegister(Request $request)
     {
 
-        if ($request->role === "admin" || $request->role === "service_urgences" ) {
+        if ($request->role === "admin" || $request->role === "service_urgences") {
             $validator = Validator::make($request->all(), [
                 'nom' => 'required|string|max:255',
                 'telephone' => 'required|digits:10|unique:users',
@@ -159,7 +168,7 @@ class AuthController extends Controller
 
             return response()
                 ->json($response);
-        }else{
+        } else {
             return response([
                 'message' => 'Erreur !! le role doit être admin ou service_urgences'
             ], 401);

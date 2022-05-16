@@ -69,7 +69,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/UserRegister', [AuthController::class, 'UserRegister']);
 
-
+Route::get('/AllUsers', [AuthController::class,'getUsers']);
 
 //service urgences
 Route::group([
@@ -87,8 +87,11 @@ Route::group([
 Route::group([
     'middleware' => ['IsVulnerable','auth:sanctum']
   ], function(){
+
+    Route::apiResource('/Assignations', AssignationController::class);
+
     Route::get('/profileVulnerable', function (Request $request) {
-        if(Auth::user()->role =='vulnérable'){
+        if(Auth::user()->role =='vulnerable'){
             return auth()->user();
         }
     });
@@ -128,3 +131,5 @@ Route::group([
 
     Route::post('/logout', [AuthController::class, 'logout']);
   });
+
+

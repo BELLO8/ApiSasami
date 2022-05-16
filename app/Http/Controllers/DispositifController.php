@@ -37,7 +37,6 @@ class DispositifController extends Controller
      */
     public function store(Request $request)
     {
-
         $length = 2;
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

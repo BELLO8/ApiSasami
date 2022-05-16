@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\Assigner;
+use App\Models\Dispositif;
+use Illuminate\Http\Request;
+use App\Models\PersonneVulnerable;
+use function PHPUnit\Framework\isEmpty;
+
 use App\Http\Resources\AssignerResource;
 use Illuminate\Support\Facades\Validator;
-
-use function PHPUnit\Framework\isEmpty;
 
 class AssignationController extends Controller
 {
@@ -32,12 +33,28 @@ class AssignationController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
+
+        $authTel = auth()->user()->telephone;
+        $vulnerable = PersonneVulnerable::get()->where("telephone","=",$authTel);
+        foreach ($vulnerable as $vul){
+            $id_vulnerable = $vul->id;
+        }
+
+        $dispositif = Dispositif::where("reference","=",$request->reference)->get();
+        foreach ($dispositif as $dispo){
+            $disp = $dispo->id;
+        }
+
+         $input = [
+            'freq_enrg' => $request->freq_enrg,
+            "date"=>Now(),
+            "id_personneV"=>$id_vulnerable,
+            "id_dispositif"=>$disp
+        ];
+        dd($input);
         $validate = Validator::make($input, [
             'freq_enrg' => 'required|max:255',
-            'date' => 'required',
-            'id_personneV' => 'required|exists:vulnerable,id',
-            'id_dispositif' => 'required|exists:dispositif,id|unique:assigner',
+            'id_dispositif' => 'required|exists:dispositif,reference|unique:assigner',
 
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
@@ -62,13 +79,27 @@ class AssignationController extends Controller
      */
     public function show($id)
     {
+        $authTel = auth()->user()->telephone;
+        $vulnerable = PersonneVulnerable::get()->where("telephone","=",$authTel);
+        foreach ($vulnerable as $vul){
+            $id_vulnerable = $vul->id;
+        }
+
+        $dispositif = Dispositif::where("reference","=",$id)->get();
+        foreach ($dispositif as $dispo){
+            $disp = $dispo->id;
+        }
+        dd($disp);
+
         $assigner = Assigner::with('dispositif', 'personne_vulnerable')->get()->find($id);
+
         if (is_null($assigner)) {
             return response()->json(array('status' => 'false','Message' => "Id introuvable"));
         } else {
             return new AssignerResource($assigner) ;
         }
     }
+
 
     /**
      * Update the specified resource in storage.

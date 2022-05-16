@@ -6,9 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class DispositifResource extends JsonResource
 {
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
     /**
      * Transform the resource into an array.
      *
@@ -18,11 +18,13 @@ class DispositifResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>dd($this),
-            'Reference'=>$this->ref,
-            'fiche Technique'=>$this->fiche,
-            'Numero'=>$this->numero,
-            'Date'=>$this->date,
+            'id' => $this->id,
+            'reference' => $this->reference,
+            'details' => $this->details,
+            'telephone' => $this->numero,
+            'Adresse_ip' => $this->Adresse_ip,
+            'status' => $this->status,
+            'date' => date($this->date),
         ];
     }
 }

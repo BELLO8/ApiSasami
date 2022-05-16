@@ -17,7 +17,7 @@ class IsAffiliee
      */
     public function handle(Request $request, Closure $next)
     {
-        if(  auth()->user()->tokenCan('role:affiliée')){
+        if(  auth()->user()->tokenCan('role:affiliee')){
             return $next($request);
         }else{
             abort(response()->json(['message' => 'pas autorisé car vous n\'êtes pas un personne affiliée !!']));
