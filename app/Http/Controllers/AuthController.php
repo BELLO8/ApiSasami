@@ -82,6 +82,44 @@ class AuthController extends Controller
             ->json($response);
     }
 
+
+    public function getUsersById($id) {
+        if (is_null(User::find($id))) {
+            return response()->json(array('status' => 'false','ID introuvable'));
+        } else {
+            return User::find($id);
+        }
+    }
+
+
+
+    public function UpdateUsers(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nom' => 'required|string|max:255',
+            'telephone' => 'required|digits:10|unique:users',
+            'role' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+            'digits' => 'Le :attribute doit etre égale à :digits chiffres',
+            'unique' => 'existe déja !'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+            $user = User::update([
+                'nom' => $request->nom,
+                'telephone' => $request->telephone,
+                'role' => $request->role,
+                'password' => Hash::make($request->password)
+            ]);
+            if($user){
+                response()->json(["message" =>"Mis à jour avec succès !"]);
+            }
+    }
+
     public function login(Request $request)
     {
         $fields = $request->validate([

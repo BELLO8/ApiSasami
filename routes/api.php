@@ -71,6 +71,9 @@ Route::post('/UserRegister', [AuthController::class, 'UserRegister']);
 
 Route::get('/AllUsers', [AuthController::class,'getUsers']);
 
+Route::get('/User/{id}', [AuthController::class,'getUsersById']);
+
+Route::put('/UpdateUsers', [AuthController::class, 'UpdateUsers']);
 //service urgences
 Route::group([
     'middleware' => ['auth:sanctum', 'IsService']
@@ -89,6 +92,8 @@ Route::group([
   ], function(){
 
     Route::apiResource('/Assignations', AssignationController::class);
+
+    Route::get('/MonDispositif',[AssignationController::class,'show']);
 
     Route::get('/profileVulnerable', function (Request $request) {
         if(Auth::user()->role =='vulnerable'){

@@ -33,29 +33,19 @@ class AssignationController extends Controller
      */
     public function store(Request $request)
     {
-
         $authTel = auth()->user()->telephone;
         $vulnerable = PersonneVulnerable::get()->where("telephone","=",$authTel);
         foreach ($vulnerable as $vul){
             $id_vulnerable = $vul->id;
         }
 
-        $dispositif = Dispositif::where("reference","=",$request->reference)->get();
-        foreach ($dispositif as $dispo){
-            $disp = $dispo->id;
-        }
-
-         $input = [
-            'freq_enrg' => $request->freq_enrg,
-            "date"=>Now(),
-            "id_personneV"=>$id_vulnerable,
-            "id_dispositif"=>$disp
+        $req = [
+            'freq_enrg' => 10,
+            "reference"=>$request->reference
         ];
-        dd($input);
-        $validate = Validator::make($input, [
-            'freq_enrg' => 'required|max:255',
-            'id_dispositif' => 'required|exists:dispositif,reference|unique:assigner',
 
+        $validate =  Validator::make($req, [
+            'reference' => 'required|exists:dispositif,reference',
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'exists' => 'Introuvable',
@@ -65,6 +55,29 @@ class AssignationController extends Controller
             return response()->json(['Erreur de validation' => $validate->errors()]);
         }
 
+
+        $dispositif = Dispositif::where("reference","=",$request->reference)->get();
+        foreach ($dispositif as $dispo){
+            $disp = $dispo->id;
+        }
+
+
+         $input = [
+            'freq_enrg' => 10,
+            "date"=>Now(),
+            "id_personneV"=>$id_vulnerable,
+            "id_dispositif"=>$disp
+        ];
+
+        $validate =  Validator::make($input, [
+            'id_dispositif' => 'unique:assigner',
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'unique'=> 'Déja assigner à une personne vulnerable'
+        ]);
+        if ($validate->fails()) {
+            return response()->json(['Erreur de validation' => $validate->errors()]);
+        }
         if (Assigner::create($input)) {
             return response()->json(array('status' => 'true','Message' => "Assigner avec succès  merci!"), 200);
         } else {
@@ -77,26 +90,18 @@ class AssignationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         $authTel = auth()->user()->telephone;
         $vulnerable = PersonneVulnerable::get()->where("telephone","=",$authTel);
         foreach ($vulnerable as $vul){
             $id_vulnerable = $vul->id;
         }
-
-        $dispositif = Dispositif::where("reference","=",$id)->get();
-        foreach ($dispositif as $dispo){
-            $disp = $dispo->id;
-        }
-        dd($disp);
-
-        $assigner = Assigner::with('dispositif', 'personne_vulnerable')->get()->find($id);
-
+        $assigner = Assigner::with('dispositif', 'personne_vulnerable')->where('id_personneV','=',$id_vulnerable)->get();
         if (is_null($assigner)) {
-            return response()->json(array('status' => 'false','Message' => "Id introuvable"));
+            return response()->json(array('status' => 'false','Message' => "Aucune assignation"));
         } else {
-            return new AssignerResource($assigner) ;
+            return  AssignerResource::collection($assigner) ;
         }
     }
 
