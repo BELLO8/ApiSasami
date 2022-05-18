@@ -118,33 +118,33 @@ class AssignationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, $id)
-    // {
-    //     $assigner = Assigner::find($id);
-    //     if (is_null($assigner)) {
-    //         return response()->json(array('status' => 'false','Message' => "Id introuvable"));
-    //     } else {
-    //         $input = $request->all();
-    //         $validate = Validator::make($input, [
-    //             'freq_enrg' => 'required|max:255',
-    //             'date' => 'required',
-    //             'id_personneV' => 'required|exists:personneVulnerable,id',
-    //             'id_dispositif' => 'required|exists:dispositif,id'
-    //         ], $messages = [
-    //             'required' => ':attribute est un champ obligatoire.',
-    //             'exists' => 'Introuvable'
-    //         ]);
+    public function update(Request $request, $id)
+    {
+        // $assigner = Assigner::find($id);
+        // if (is_null($assigner)) {
+        //     return response()->json(array('status' => 'false','Message' => "Id introuvable"));
+        // } else {
+        //     $input = $request->all();
+        //     $validate = Validator::make($input, [
+        //         'freq_enrg' => 'required|max:255',
+        //         'date' => 'required',
+        //         'id_personneV' => 'required|exists:personneVulnerable,id',
+        //         'id_dispositif' => 'required|exists:dispositif,id'
+        //     ], $messages = [
+        //         'required' => ':attribute est un champ obligatoire.',
+        //         'exists' => 'Introuvable'
+        //     ]);
 
-    //         if ($validate->fails()) {
-    //             return response()->json(['Erreur de validation' => $validate->errors()]);
-    //         }
-    //         if ($assigner->update($input)) {
-    //             return response()->json(array('Message' => "Assignation renouvelée"));
-    //         } else {
-    //             return response()->json(array('Message' => "Erreur"));
-    //         }
-    //     }
-    // }
+        //     if ($validate->fails()) {
+        //         return response()->json(['Erreur de validation' => $validate->errors()]);
+        //     }
+        //     if ($assigner->update($input)) {
+        //         return response()->json(array('Message' => "Assignation renouvelée"));
+        //     } else {
+        //         return response()->json(array('Message' => "Erreur"));
+        //     }
+        // }
+    }
 
     /**
      * Remove the specified resource from storage.

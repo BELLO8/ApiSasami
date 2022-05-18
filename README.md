@@ -26,8 +26,8 @@
 - Git
 
 ## Installation
-1. Cloner le dépôt dans votre dossier web : `git clone <url vers le dépôt> immo`
-2. Aller dans le dossier `immo` : `cd immo`
+1. Cloner le dépôt dans votre dossier web : `git clone <url vers le dépôt> sassami`
+2. Aller dans le dossier `sassami` : `cd sassami`
 3. Installer/mettre à jour les dépendances : `composer install` ou `composer update`
 4. Créer une base de données depuis le gestionnaire de base de données (_phpMyAdmin_ par exemple)
 5. Copier le `.env.example` en `.env` et modifier le fichier `.env` avec le nom de l'application, l'environnement (development/production), les identifiants de la base de données, les paramètres d'e-mail
