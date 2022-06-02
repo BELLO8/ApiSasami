@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SurveilleRequest;
 use App\Http\Resources\SurveilleResource;
+use App\Models\PersonneAffilee;
 use Illuminate\Support\Facades\Validator;
 
 class SurveillerController extends Controller
@@ -56,13 +57,18 @@ class SurveillerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Respons
      */
-    public function show(Request $request, $id)
+    public function show()
     {
-        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->get()->find($id);
+        $authTel = auth()->user()->telephone;
+        $affilee = PersonneAffilee::get()->where("telephone","=",$authTel);
+        foreach ($affilee as $aff){
+            $id_affilee = $aff->id;
+        }
+        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->where('id_personne_Affilee','=',$id_affilee)->get();
         if(is_null($surveiller)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{
-            return new SurveilleResource($surveiller);
+            return  SurveilleResource::collection($surveiller);
         }
     }
 

@@ -5,13 +5,16 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4.29",
+        "beyondcode/laravel-websockets": "^1.13",
+        "cboden/ratchet": "^0.4.4",
         "darkaonline/l5-swagger": "^8.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "pusher/pusher-php-server": "~3.0",
         "reliese/laravel": "^1.1"
     },
     "require-dev": {

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Surveiller;
 use Illuminate\Http\Request;
 use App\Models\PersonneAffilee;
 use App\Models\PersonneVulnerable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\SurveilleResource;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -49,7 +51,6 @@ class AuthController extends Controller
         } elseif ($request->role === "affiliee") {
             $user = User::create([
                 'nom' => $request->nom,
-                'adresse' => $request->adresse,
                 'telephone' => $request->telephone,
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
@@ -67,25 +68,25 @@ class AuthController extends Controller
                 'message' => 'Erreur !!'
             ], 401);
         }
+        //$token = $user->createToken('auth_token')->plainTextToken;
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        $response = [
-            "id" => $user->id,
-            "nom" => $user->nom,
-            "telephone" => $user->telephone,
-            "role" => $user->role,
-            'token' => $token
+        // $response = [
+        //     "id" => $user->id,
+        //     "nom" => $user->nom,
+        //     "telephone" => $user->telephone,
+        //     "role" => $user->role,
+        //     'token' => $token
+        // ];
+        return [
+            'message' => 'Inscription effectué'
         ];
-
-        return response()
-            ->json($response);
     }
 
 
-    public function getUsersById($id) {
+    public function getUsersById($id)
+    {
         if (is_null(User::find($id))) {
-            return response()->json(array('status' => 'false','ID introuvable'));
+            return response()->json(array('status' => 'false', 'ID introuvable'));
         } else {
             return User::find($id);
         }
@@ -93,31 +94,33 @@ class AuthController extends Controller
 
 
 
-    public function UpdateUsers(Request $request)
+    public function UpdateUsers(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|max:255',
-            'telephone' => 'required|digits:10|unique:users',
-            'role' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-        ], $messages = [
-            'required' => ':attribute est un champ obligatoire.',
-            'max' => ':attribute ne doit pas etre superieur à :max chiffres',
-            'digits' => 'Le :attribute doit etre égale à :digits chiffres',
-            'unique' => 'existe déja !'
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-            $user = User::update([
-                'nom' => $request->nom,
-                'telephone' => $request->telephone,
-                'role' => $request->role,
-                'password' => Hash::make($request->password)
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(array('Message' => "Id introuvable"));
+        } else {
+            $input = $request->all();
+            $validator = Validator::make($request->all(), [
+                'nom' => 'required|string|max:255',
+                'telephone' => 'required|digits:10',
+                'role' => 'required|string|max:255',
+                'password' => 'required|string|min:8',
+            ], $messages = [
+                'required' => ':attribute est un champ obligatoire.',
+                'max' => ':attribute ne doit pas etre superieur à :max chiffres',
+                'digits' => 'Le :attribute doit etre égale à :digits chiffres',
+                'unique' => 'existe déja !'
             ]);
-            if($user){
-                response()->json(["message" =>"Mis à jour avec succès !"]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors());
             }
+            if ($user->update($input))  {
+                return response()->json(array('success' => "Mis à jour "), 200);
+            } else {
+                return response()->json(array('status' => 'false', 'Erreur de mis à jour '));
+            }
+        }
     }
 
     public function login(Request $request)
@@ -135,6 +138,7 @@ class AuthController extends Controller
                 'message' => 'Identifiants incorrect !!'
             ], 401);
         }
+
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -172,7 +176,7 @@ class AuthController extends Controller
     public function UserRegister(Request $request)
     {
 
-        if ($request->role === "admin" || $request->role === "service_urgences") {
+        if ($request->role === "admin" || $request->role === "service_urgences" || $request->role === "service_hopital") {
             $validator = Validator::make($request->all(), [
                 'nom' => 'required|string|max:255',
                 'telephone' => 'required|digits:10|unique:users',

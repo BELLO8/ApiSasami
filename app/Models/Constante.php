@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 
 /**
  * Class Constante
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Constante extends Model
 {
+    use BroadcastsEvents;
+
 	protected $table = 'constante';
 	public $timestamps = false;
 
@@ -55,4 +58,9 @@ class Constante extends Model
 	{
 		return $this->belongsTo(Assigner::class, 'id_assigner');
 	}
+
+    // public function broadcastOn($event)
+    // {
+    //     return [$this, $this->assigner];
+    // }
 }

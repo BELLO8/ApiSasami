@@ -51,7 +51,7 @@ class DispositifController extends Controller
             "telephone"=>$request->telephone,
             "Adresse_ip"=>$request->Adresse_ip,
             "status"=>$request->status,
-            "date"=>$request->date
+            "date"=>Now()
         ];
 
         $validate = Validator::make($input, [
@@ -61,7 +61,6 @@ class DispositifController extends Controller
             'telephone' => 'required|digits:10|unique:dispositif',
             'Adresse_ip' => 'required|min:10|unique:dispositif',
             'status' => 'required|',
-            'date' => 'required|date'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'digits' => 'Le :attribute doit etre égale à :digits chiffres',
@@ -106,28 +105,27 @@ class DispositifController extends Controller
         //dd($request->all());
         $dispositif = Dispositif::find($id);
 
-
         if (is_null($dispositif)) {
             return response()->json(array('status' => 'false','ID introuvable'));
         } else {
-            $input = $request->all();
+            $input = [
+                "details"=>$request->details,
+                "telephone"=>$request->telephone,
+                "Adresse_ip"=>$request->Adresse_ip,
+                "status"=>$request->status,
+            ];
             $validate = Validator::make($input, [
-
-                'reference' => 'required|unique:dispositif',
                 'details' => 'required',
-                'telephone' => 'required|digits:10|unique:dispositif',
-                'Adresse_ip' => 'required|min:10|unique:dispositif',
+                'telephone' => 'required|digits:10',
+                'Adresse_ip' => 'required|min:10',
                 'status' => 'required|',
-                'date' => 'required|date'
             ], $messages = [
                 'required' => ':attribute est un champ obligatoire.',
                 'digits' => 'Le :attribute doit etre égale à :digits chiffres',
-                'unique'=>'Existe déja !'
             ]);
             if ($validate->fails()) {
                 return response()->json(['status' => 'false','Erreur de validation' => $validate->errors()]);
             }
-
             if ($dispositif->update($input)) {
                 return response()->json(array('status' => 'true', 'success' => "Mis à jour "), 200);
             } else {

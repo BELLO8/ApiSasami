@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Constante;
 use Illuminate\Http\Request;
 
+use App\Events\EventConstante;
 use function PHPUnit\Framework\isEmpty;
 use App\Http\Resources\ConstantResource;
 
@@ -21,6 +22,11 @@ class ConstanteController extends Controller
         if(is_null($constante)){
             return response()->json(array('Message' => " Collection vide !"), 200);
          }
+
+        // event(new EventConstante([
+        //     $constante
+        // ]));
+
         return $constante;
     }
 
@@ -34,6 +40,7 @@ class ConstanteController extends Controller
 
     {
         if (Constante::create($request->all())) {
+            event(new EventConstante($request->all()));
             return response()->json(array('status' => 'true', 'success' => "Constante enregistrée"), 200);
         } else {
             return response()->json(array('status' => 'false', 'Erreur d\'enregistrement'));

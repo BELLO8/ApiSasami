@@ -32,7 +32,7 @@ class PersonneVulnerableController extends Controller
             "nom" => 'required|max:255',
             "prenom" => 'required|max:255',
             "adresse" => 'required|max:255',
-            "telephone" => 'required|digits:10|unique:personnes_vul',
+            "telephone" => 'required|digits:10|unique:vulnerable',
             "age" => 'required|numeric|between:0,110'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',

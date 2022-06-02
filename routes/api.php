@@ -73,7 +73,7 @@ Route::get('/AllUsers', [AuthController::class,'getUsers']);
 
 Route::get('/User/{id}', [AuthController::class,'getUsersById']);
 
-Route::put('/UpdateUsers', [AuthController::class, 'UpdateUsers']);
+Route::put('/UpdateUsers/{id}', [AuthController::class, 'UpdateUsers']);
 //service urgences
 Route::group([
     'middleware' => ['auth:sanctum', 'IsService']
@@ -120,6 +120,7 @@ Route::group([
             return auth()->user();
         }
     });
+    Route::get('/Suivre',[SurveillerController::class,'show']);
     Route::post('/logout', [AuthController::class, 'logout']);
   });
 
