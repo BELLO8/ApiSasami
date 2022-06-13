@@ -43,8 +43,8 @@ class AlertController extends Controller
         $input = $request->all();
         $validate = Validator::make($input, [
             'date_envoie'=>'required|max:255',
-            'id_incident'=>'required|exists:incident,id',
-            'id_contact_urgence'=>'required|exists:contact_urgence,id'
+            'id_incident'=>'required|exists:incident,id|unique:id_incident',
+            'id_contact_urgence'=>'required|exists:contact_urgence,id|unique:id_contact_urgence'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',

@@ -14,6 +14,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class EventConstante implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $Constante;
     /**
      * Create a new event instance.
@@ -32,18 +33,17 @@ class EventConstante implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('Constante.index');
+        return new Channel('Constante');
     }
 
     public function broadcastAs()
     {
-        return 'Constant.created';
+        return 'Constante';
     }
 
     public function broadcastWith()
     {
-        return [
-        "constantes" => $this->Constante
-        ];
+        return $this->Constante;
+
     }
 }

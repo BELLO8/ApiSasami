@@ -14,6 +14,7 @@ class AlerteResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->id,
             'date_envoie' => date($this->date_envoie),
@@ -25,8 +26,11 @@ class AlerteResource extends JsonResource
             'telephone' => $this->Incident->assigner->dispositif->telephone,
             'Adresse_ip' => $this->Incident->assigner->dispositif->Adresse_ip,
             'status' => $this->Incident->assigner->dispositif->status,
-            'personne' => SurveilleResource::collection($this->Incident->assigner->personne_vulnerable->surveillers),
-            'constantes' => $this->Incident->assigner->constantes,
+            'personne_vulnerable_nom'=>$this->Incident->assigner->personne_vulnerable->nom,
+            'personne_vulnerable_prenom'=>$this->Incident->assigner->personne_vulnerable->prenom,
+            'personne_vulnerable_telephone'=>$this->Incident->assigner->personne_vulnerable->telephone,
+            'personne_vulnerable_age'=>$this->Incident->assigner->personne_vulnerable->age,
+            //'constantes' => $this->Incident->assigner->constantes,
         ];
     }
 }

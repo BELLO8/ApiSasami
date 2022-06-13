@@ -18,6 +18,7 @@ class ConstanteController extends Controller
      */
     public function index()
     {
+        //broadcast(new EventConstante('temp 43'));
         $constante = ConstantResource::collection(Constante::with("assigner")->get());
         if(is_null($constante)){
             return response()->json(array('Message' => " Collection vide !"), 200);
@@ -39,13 +40,15 @@ class ConstanteController extends Controller
     public function store(Request $request)
 
     {
+        event(new EventConstante($request->all()));
+        
         if (Constante::create($request->all())) {
-            event(new EventConstante($request->all()));
+
             return response()->json(array('status' => 'true', 'success' => "Constante enregistrée"), 200);
         } else {
             return response()->json(array('status' => 'false', 'Erreur d\'enregistrement'));
         }
-        //
+
     }
 
     /**

@@ -1,8 +1,7 @@
 <?php
 
+use App\Http\Controllers\ConstanteController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MyCustomWebSocketHandler;
-use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,5 +16,3 @@ use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
-WebSocketsRouter::webSocket('/my-websocket', MyCustomWebSocketHandler::class);

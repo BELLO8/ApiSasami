@@ -2060,7 +2060,16 @@ module.exports = {
   \*****************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // import Echo from 'laravel-echo';
+// window.Pusher = require('pusher-js');
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_ABLY_PUBLIC_KEY,
+//     wsHost: window.location.hostname,
+//     wsPort: 6001,
+//     disableStats: true,
+//     encrypted: true,
+// });
 
 /***/ }),
 
@@ -2102,8 +2111,8 @@ window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/d
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: process.env.MIX_ABLY_PUBLIC_KEY,
-  wsHost: 'realtime-pusher.ably.io',
-  wsPort: 443,
+  wsHost: window.location.hostname,
+  wsPort: 6001,
   disableStats: true,
   encrypted: true
 });

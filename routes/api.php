@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Events\EventConstante;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -59,9 +60,7 @@ Route::apiResource('Constante', ConstanteController::class);
 
 Route::apiResource('Surveiller', SurveillerController::class);
 
-
 Route::apiResource('/Dispositifs', DispositifController::class);
-
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -74,10 +73,30 @@ Route::get('/AllUsers', [AuthController::class,'getUsers']);
 Route::get('/User/{id}', [AuthController::class,'getUsersById']);
 
 Route::put('/UpdateUsers/{id}', [AuthController::class, 'UpdateUsers']);
+
+
+//service hospitalier
+Route::group([
+    'middleware' => ['auth:sanctum', 'IsServicehospitalier']
+  ], function(){
+    Route::get('/profileServiceHospitalier', function (Request $request) {
+        if(Auth::user()->role =='service_hopital'){
+            return auth()->user();
+        }
+    });
+    Route::post('/logout', [AuthController::class, 'logout']);
+  });
+
+
+
+
 //service urgences
 Route::group([
     'middleware' => ['auth:sanctum', 'IsService']
   ], function(){
+
+    Route::apiResource('/Assignations', AssignationController::class);
+
     Route::get('/profileServiceUrgence', function (Request $request) {
         if(Auth::user()->role =='vulnérable'){
             return auth()->user();
@@ -137,5 +156,3 @@ Route::group([
 
     Route::post('/logout', [AuthController::class, 'logout']);
   });
-
-
