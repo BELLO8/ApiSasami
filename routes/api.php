@@ -54,7 +54,7 @@ Route::get("/NombreService", [ServiceUrgenceController::class, "count"]);
 
 Route::get("/NombreIncident", [IncidentController::class, "count"]);
 //
-Route::apiResource('MaFiche', FicheController::class);
+Route::apiResource('LesFicheMedicales', FicheController::class);
 
 Route::apiResource('Constante', ConstanteController::class);
 
@@ -74,11 +74,13 @@ Route::get('/User/{id}', [AuthController::class,'getUsersById']);
 
 Route::put('/UpdateUsers/{id}', [AuthController::class, 'UpdateUsers']);
 
+Route::post('/SendNotification', [AlertController::class, 'sendWebNotification']);
 
 //service hospitalier
 Route::group([
     'middleware' => ['auth:sanctum', 'IsServicehospitalier']
   ], function(){
+    
     Route::get('/profileServiceHospitalier', function (Request $request) {
         if(Auth::user()->role =='service_hopital'){
             return auth()->user();
@@ -120,7 +122,9 @@ Route::group([
         }
     });
 
-    Route::get('ficheMedicale', [FicheController::class,'show']);
+    Route::get('MaFicheMedicale', [FicheController::class,'show']);
+
+    Route::put('MaFicheMedicale', [FicheController::class,'updateMaFiche']);
 
     Route::post('AddFiche', [FicheController::class,'store']);
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FicheMedicale;
 use App\Http\Resources\FicheResource;
+use App\Models\PersonneVulnerable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FicheController extends Controller
@@ -58,16 +60,25 @@ class FicheController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        $maFiche = FicheMedicale::find($id);
+
+        $telAuth = Auth::user()->telephone;
+        $personne_vulnerable = PersonneVulnerable::where("telephone","=",$telAuth)->get();
+        foreach ($personne_vulnerable as $personne_vul){
+            $idVulnerable = $personne_vul->id;
+        }
+        $maFiche = FicheMedicale::with("Personne_vulnerable")->where("id_personne_vulnerable","=",$idVulnerable)->get();
         if (!is_null($maFiche)) {
-            return new FicheResource($maFiche);
+            return  FicheResource::collection($maFiche);
         } else {
-            return response()->json(["message" => "id introuvable"]);
+            return response()->json(["message" => "fiche introuvable"]);
         }
     }
 
+    public function updateMaFiche(Request $request){
+        dd($request->all());
+    }
     /**
      * Update the specified resource in storage.
      *

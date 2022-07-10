@@ -10,6 +10,7 @@ use App\Models\PersonneVulnerable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\SurveilleResource;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -125,6 +126,8 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $tel_token = $request->tel_token;
+
         $fields = $request->validate([
             'telephone' => 'required|string|digits:10',
             'password' => 'required|string'
@@ -133,11 +136,18 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('telephone', $fields['telephone'])->first();
+        $input = [
+            "tel_token" =>(!is_null($tel_token))? $tel_token : 'le TOKEN NULL',
+            "user_id"=> $user->id,
+        ];
+       //dd($input);
+        Notification::updateOrCreate([ 'user_id' => $user->id ],$input);
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Identifiants incorrect !!'
             ], 401);
         }
+
 
 
         $token = $user->createToken('myapptoken')->plainTextToken;
@@ -149,6 +159,8 @@ class AuthController extends Controller
             "role" => $user->role,
             'token' => $token
         ];
+
+
 
         return response()
             ->json($response);

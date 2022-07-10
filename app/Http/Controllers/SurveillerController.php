@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SurveilleRequest;
 use App\Http\Resources\SurveilleResource;
 use App\Models\PersonneAffilee;
+use App\Models\PersonneVulnerable;
 use Illuminate\Support\Facades\Validator;
 
 class SurveillerController extends Controller
@@ -60,11 +61,13 @@ class SurveillerController extends Controller
     public function show()
     {
         $authTel = auth()->user()->telephone;
-        $affilee = PersonneAffilee::get()->where("telephone","=",$authTel);
-        foreach ($affilee as $aff){
+        $vulnerable = PersonneVulnerable::get()->where("telephone","=",$authTel);
+
+        foreach ($vulnerable as $aff){
             $id_affilee = $aff->id;
         }
-        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->where('id_personne_Affilee','=',$id_affilee)->get();
+        $surveiller = Surveiller::with("Personne_vulnerable","Personne_affilee")->where('id_personne_vulnerable','=',$id_affilee)->get();
+
         if(is_null($surveiller)){
             return response()->json(array('Message'=>"Id introuvable"));
         }else{

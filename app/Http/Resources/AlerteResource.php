@@ -33,4 +33,4 @@ class AlerteResource extends JsonResource
             //'constantes' => $this->Incident->assigner->constantes,
         ];
     }
-}
+}   

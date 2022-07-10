@@ -16,7 +16,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        return IncidentResource::collection(Incident::with("Assigner")->get());
+        return IncidentResource::collection(Incident::with("Assigner")->orderBy('date_declenchement', 'desc')->get());
     }
 
     public function Count()
@@ -34,23 +34,67 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
+        $inputIncident = [
+            'libincident'=>$request->libincident,
+		    'id_assigner'=>$request->id_assigner,
+		    'date_declenchement'=>Now()
+        ];
+
         $input = $request->all();
-        $validate = Validator::make($input, [
+
+        $validate = Validator::make($inputIncident, [
             'libincident'=>'required|max:255',
 		    'id_assigner'=>'required|exists:assigner,id',
-		    'date_declenchement'=>'required|date'
         ], $messages = [
             'required' => ':attribute est un champ obligatoire.',
             'max' => ':attribute ne doit pas etre superieur à :max chiffres',
             'exists' => 'Introuvable',
-            'date'=>'Le formate de la date est incorrecte merci !'
         ]);
         if ($validate->fails()) {
             return response()->json(['Erreur de validation' => $validate->errors()]);
         }
 
+        //dd($request->all());
         if(Incident::create($input)){
-            return response()->json(array('Message'=>"Incident créer !"),200);
+
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        //$FcmToken = "c0rp1nLqQQ26MUqbza4hJz:APA91bG59bycl2b4P_j3QcxARwj1Fa-pC32y7PkGIY4yFOmeeOQ61iJO1kQKRHFYdyC2OCJmEGIAemIOEyzu6qLxovNDOrgxS_aDfopLIDAuaYoVyQLe1zGxJo8CaFST7qMWQ-dMCU6y";
+        $FcmToken = "emdu1MSdRqW5u5M2BRmkML:APA91bH-Bb2WzT4LYz6pGD39VBhKG5Y_7hqPemTR1lMVogr2nKKAONAwEPyKSF1H-mcGIxopZTUuDYSX_7KKs6ZguelGT15quGIh56S5o8cRoSuSqr4wmpKvMclwVcF6ZkV9j61trPe5";
+        $serverKey = 'AAAAAvNml1s:APA91bF0L53xMG9VAlpvXgVzT1ucDfCXGl0mSyzSg3G6TG56UQxaliX3jj7fAcXF1963IANUoxRtZmsEL0PNFQKfu6SPeNu2f5MT2O8DVlLZHYwKQH26pCsGuUXWhYlmKYhLqbsimFD1';
+        $data = [
+            "to" => $FcmToken,
+            "priority" => "high",
+            "notification" => [
+                "title" => "urgence",
+                "body" => $request->libincident,
+            ],
+        ];
+        $encodedData = json_encode($data);
+
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+        // Close connection
+        curl_close($ch);
+            return response()->json(array('status' => 'true','Message'=>$result),200);
         }else{
             return response()->json(array('Message'=>"Erreur"));
         }

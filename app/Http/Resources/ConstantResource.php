@@ -22,7 +22,15 @@ class ConstantResource extends JsonResource
             "rythme_card" => $this->rythme_card ,
             "coordonnee_geographique" => $this->coordonnee_geographique,
             "date" => $this->date,
-            "assigner" => new AssignerResource($this->assigner),
+            'nom_assigner' => $this->assigner->personne_vulnerable->nom,
+            'prenom_assigner' => $this->assigner->personne_vulnerable->prenom,
+            'contat_assigner' => $this->assigner->personne_vulnerable->telephone,
+            'freq_enrg' => $this->assigner->freq_enrg . ' sec',
+            'reference' => $this->assigner->dispositif->reference,
+            'details' => $this->assigner->dispositif->details,
+            'telephone' => $this->assigner->dispositif->telephone,
+            'Adresse_ip' => $this->assigner->dispositif->Adresse_ip,
+            'status' => $this->assigner->dispositif->status,
         ];
     }
 }

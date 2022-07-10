@@ -15,7 +15,9 @@ class AssignerResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'nom_assigner' => $this->personne_vulnerable->nom,
+            'prenom_assigner' => $this->personne_vulnerable->prenom,
+            'contat_assigner' => $this->personne_vulnerable->telephone,
             'freq_enrg' => $this->freq_enrg . ' sec',
             'reference' => $this->dispositif->reference,
             'details' => $this->dispositif->details,

@@ -40,10 +40,17 @@ class ConstanteController extends Controller
     public function store(Request $request)
 
     {
-        event(new EventConstante($request->all()));
-        
-        if (Constante::create($request->all())) {
+        $input = [
+            "temperature"=>$request->temperature,
+            "nombre_pas"=> $request->nombre_pas,
+            "frequence_res"=> $request->frequence_res,
+            "rythme_card" => $request->rythme_card,
+            "coordonnee_geographique" => $request->coordonnee_geographique,
+            "date" =>Now(),
+            "id_assigner"=> 1,
+        ];
 
+        if (Constante::create($input)) {
             return response()->json(array('status' => 'true', 'success' => "Constante enregistrée"), 200);
         } else {
             return response()->json(array('status' => 'false', 'Erreur d\'enregistrement'));
