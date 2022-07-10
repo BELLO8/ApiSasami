@@ -210,6 +210,7 @@ class AuthController extends Controller
                 'role' => $request->role,
                 'password' => Hash::make($request->password)
             ]);
+            
             $token = $user->createToken('auth_token')->plainTextToken;
 
             $response = [

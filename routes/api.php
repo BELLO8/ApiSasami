@@ -80,7 +80,12 @@ Route::post('/SendNotification', [AlertController::class, 'sendWebNotification']
 Route::group([
     'middleware' => ['auth:sanctum', 'IsServicehospitalier']
   ], function(){
-    
+
+    Route::get('/Patients',[ PersonneVulnerableController::class,'index']);
+    Route::get('/Patients/{id}',[ PersonneVulnerableController::class,'show']);
+    Route::get('/Appareils',[ DispositifController::class,'index']);
+    Route::post('/Assigner', [AssignationController::class,'assign']);
+    Route::get('Assignations{id}',[AssignationController::class,'assignShow']);
     Route::get('/profileServiceHospitalier', function (Request $request) {
         if(Auth::user()->role =='service_hopital'){
             return auth()->user();

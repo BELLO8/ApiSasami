@@ -31,6 +31,44 @@ class AssignationController extends Controller
      * @param  \Illuminate\Htt p\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function assign(Request $request){
+        $input = [
+            'freq_enrg' => 10,
+            "date"=>Now(),
+            "id_personneV"=>$request->id_personneV,
+            "id_dispositif"=>$request->id_dispositif
+        ];
+
+        $validate =  Validator::make($input, [
+            'id_dispositif' => 'unique:assigner|required|exists:dispositif,id',
+            'id_personneV' => 'unique:assigner|required|exists:vulnerable,id',
+        ], $messages = [
+            'required' => ':attribute est un champ obligatoire.',
+            'unique'=> 'Déja assigner à une personne vulnerable',
+            'exists'=>'n\'existe pas !!'
+        ]);
+        $errors = $validate->errors();
+        if ($validate->fails()) {
+            return response()->json(array('status' => "info",'message' => $errors->first('id_dispositif')));
+        }
+        if (Assigner::create($input)) {
+            return response()->json(array('message' => "Assigner avec succès  merci!"), 200);
+        } else {
+            return response()->json(array('message' => "Erreur d'assignation"));
+        }
+    }
+
+    public function assignShow($id)
+    {
+        $assigner = Assigner::with('dispositif', 'personne_vulnerable')->where('id_personneV','=',$id)->get();
+        if (is_null($assigner)) {
+            return response()->json(array('status' => 'false','Message' => "Aucune assignation"));
+        } else {
+            return  AssignerResource::collection($assigner) ;
+        }
+    }
+
     public function store(Request $request)
     {
         $authTel = auth()->user()->telephone;
