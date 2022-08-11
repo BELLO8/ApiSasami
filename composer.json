@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4.29",
+        "php": "^8.0.20",
         "beyondcode/laravel-websockets": "^1.13",
         "cboden/ratchet": "^0.4.4",
         "darkaonline/l5-swagger": "^8.3",
@@ -14,7 +14,7 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "pusher/pusher-php-server": "~3.0",
+        "orangehill/iseed": "^3.0",
         "reliese/laravel": "^1.1"
     },
     "require-dev": {
